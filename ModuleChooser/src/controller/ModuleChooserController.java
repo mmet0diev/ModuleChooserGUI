@@ -16,8 +16,8 @@ public class ModuleChooserController {
 	private ModuleChooserRootPane view;
 	private StudentProfile model;
 	
-	private CreateStudentProfilePane cspp;
-	private ModuleChooserMenuBar mstmb;
+	private CreateStudentProfilePane spp;
+	private ModuleChooserMenuBar mcmb;
 
 	public ModuleChooserController(ModuleChooserRootPane view, StudentProfile model) {
 		//initialise view and model fields
@@ -25,11 +25,11 @@ public class ModuleChooserController {
 		this.model = model;
 		
 		//initialise view subcontainer fields
-		cspp = view.getCreateStudentProfilePane();
-		mstmb = view.getModuleSelectionToolMenuBar();
+		spp = view.getCreateStudentProfilePane();
+		mcmb = view.getModuleSelectionToolMenuBar();
 
 		//add courses to combobox in create student profile pane using the generateAndGetCourses helper method below
-		cspp.addCoursesToComboBox(generateAndGetCourses());
+		spp.addCoursesToComboBox(generateAndGetCourses());
 
 		//attach event handlers to view using private helper method
 		this.attachEventHandlers();	
@@ -39,10 +39,10 @@ public class ModuleChooserController {
 	//helper method - used to attach event handlers
 	private void attachEventHandlers() {
 		//attach an event handler to the create student profile pane
-		cspp.addCreateStudentProfileHandler(new CreateStudentProfileHandler());
+		spp.addCreateStudentProfileHandler(new CreateStudentProfileHandler());
 		
 		//attach an event handler to the menu bar that closes the application
-		mstmb.addExitHandler(e -> System.exit(0));
+		mcmb.addExitHandler(e -> System.exit(0));
 	}
 	
 	//event handler (currently empty), which can be used for creating a profile

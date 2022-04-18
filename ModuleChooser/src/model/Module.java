@@ -90,7 +90,6 @@ public class Module implements Comparable<Module> {
 						result = this.delivery.compareTo(other.delivery);
 					}
 				}
-				
 			}
 		}
 		

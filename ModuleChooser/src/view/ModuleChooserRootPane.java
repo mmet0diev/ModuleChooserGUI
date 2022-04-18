@@ -8,7 +8,7 @@ import javafx.scene.layout.BorderPane;
 
 public class ModuleChooserRootPane extends BorderPane {
 
-	private CreateStudentProfilePane cspp;
+	private CreateStudentProfilePane spp;
 	private ModuleChooserMenuBar mcmb;
 	private TabPane tp;
 	
@@ -18,10 +18,10 @@ public class ModuleChooserRootPane extends BorderPane {
 		tp.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 		
 		//create panes
-		cspp = new CreateStudentProfilePane();
+		spp = new CreateStudentProfilePane();
 		
 		//create tabs with panes added
-		Tab t1 = new Tab("Create Profile", cspp);
+		Tab t1 = new Tab("Create Profile", spp);
 		
 		//add tabs to tab pane
 		tp.getTabs().addAll(t1);
@@ -32,18 +32,17 @@ public class ModuleChooserRootPane extends BorderPane {
 		//add menu bar and tab pane to this root pane
 		this.setTop(mcmb);
 		this.setCenter(tp);
-		
 	}
 
 	//methods allowing sub-containers to be accessed by the controller.
 	public CreateStudentProfilePane getCreateStudentProfilePane() {
-		return cspp;
+		return spp;
 	}
-	
+
 	public ModuleChooserMenuBar getModuleSelectionToolMenuBar() {
 		return mcmb;
 	}
-	
+
 	//method to allow the controller to change tabs
 	public void changeTab(int index) {
 		tp.getSelectionModel().select(index);

@@ -62,5 +62,4 @@ public class ModuleChooserMenuBar extends MenuBar {
 	public void addExitHandler(EventHandler<ActionEvent> handler) {
 		exitItem.setOnAction(handler);
 	}
-
 }
