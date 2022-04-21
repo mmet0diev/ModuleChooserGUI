@@ -11,6 +11,8 @@ public class ModuleChooserRootPane extends BorderPane {
 	private CreateStudentProfilePane cspp;
 	private ModuleChooserMenuBar mcmb;
 	private TabPane tp;
+	private SelectModulesRootPane selectModsPane;
+	private ReserveModsRootPane resModsPane;
 	
 	public ModuleChooserRootPane() {
 		//create tab pane and disable tabs from being closed
@@ -19,12 +21,16 @@ public class ModuleChooserRootPane extends BorderPane {
 		
 		//create panes
 		cspp = new CreateStudentProfilePane();
-		
+		selectModsPane = new SelectModulesRootPane();
+		resModsPane = new ReserveModsRootPane();
+
 		//create tabs with panes added
 		Tab t1 = new Tab("Create Profile", cspp);
-		
+		Tab t2 = new Tab("Select modules", selectModsPane);
+		Tab t3 = new Tab("Reserve modules" ,resModsPane);
+
 		//add tabs to tab pane
-		tp.getTabs().addAll(t1);
+		tp.getTabs().addAll(t1, t2, t3);
 		
 		//create menu bar
 		mcmb = new ModuleChooserMenuBar();
