@@ -10,48 +10,38 @@ public class ReserveModsRootPane extends Accordion {
     public ReserveModsRootPane() {
         this.setPadding(new Insets(8));
         //Instantiate Panes
-        HBox t1box = new HBox();
-        t1box.setPadding(new Insets(10));
-        t1box.setSpacing(8);
-        NotSelectedT1Mods uSelectModsPane = new NotSelectedT1Mods();
-        ReservedT1ModsPane reservedModsPane = new ReservedT1ModsPane();
+        SubPaneReserveMods1 reserveMods1 = new SubPaneReserveMods1();
+        SubPaneReserveMods2 reserveMods2 = new SubPaneReserveMods2();
 
-        t1box.getChildren().addAll(uSelectModsPane, reservedModsPane);
-
-        TitledPane t1 = new TitledPane("Term 1 modules", t1box);
-        TitledPane t2 = new TitledPane("Term 2 modules", new HBox());
+        TitledPane t1 = new TitledPane("Term 1 modules", reserveMods1);
+        TitledPane t2 = new TitledPane("Term 2 modules", reserveMods2);
 
         this.getPanes().add(t1);
         this.getPanes().add(t2);
     }
 
-    private class NotSelectedT1Mods extends VBox {
-        private NotSelectedT1Mods() {
-//            this.setAlignment(Pos.CENTER);
+    private class SubPaneReserveMods1 extends HBox{
+        private SubPaneReserveMods1(){
             this.setPadding(new Insets(10));
             this.setSpacing(8);
+
+            //Instantiate 2 VBoxes, left VBox and right VBox
+            VBox unSelectModsBox = new VBox();
+            VBox reserveModsBox = new VBox();
+            //Label 1
             Label lb1 = new Label("Unselected Term 1 modules\n");
 
+            //List view for not selected modules term 1
             ListView<Module> notSelectedModsList = new ListView<>();
-            notSelectedModsList.setPrefSize(350, 200);
+            notSelectedModsList.setPrefSize(400, 250);
 
+            //Label 2
             Label lb2 = new Label("Reserve 30 credits worth of modules");
 
-            this.getChildren().add(lb1);
-            this.getChildren().add(notSelectedModsList);
-            this.getChildren().add(lb2);
-        }
-    }
-
-    private class ReservedT1ModsPane extends VBox {
-        public ReservedT1ModsPane() {
-            this.setPadding(new Insets(10));
-            this.setSpacing(8);
-
-            Label lb1 = new Label("Reserved Term 1 modules\n");
+            Label lb3 = new Label("Reserved Term 1 modules\n");
 
             ListView<Module> reservedModsList = new ListView<>();
-            reservedModsList.setPrefSize(350, 200);
+            reservedModsList.setPrefSize(400, 250);
 
             ButtonBar btns = new ButtonBar();
             Button btn1 = new Button("Add");
@@ -60,9 +50,59 @@ public class ReserveModsRootPane extends Accordion {
 
             btns.getButtons().addAll(btn1, btn2, btn3);
 
-            this.getChildren().add(lb1);
-            this.getChildren().add(reservedModsList);
-            this.getChildren().add(btns);
+            //Set the spacing for the elements inside each VBox
+            unSelectModsBox.setSpacing(6);
+            reserveModsBox.setSpacing(6);
+
+            //Add each sub node/element to the VBoxes
+            unSelectModsBox.getChildren().addAll(lb1, notSelectedModsList, lb2);
+            reserveModsBox.getChildren().addAll(lb3, reservedModsList, btns);
+
+            //Add the VBoxes to the containing HBox
+            this.getChildren().addAll(unSelectModsBox, reserveModsBox);
+        }
+    }
+
+    private class SubPaneReserveMods2 extends HBox{
+        private SubPaneReserveMods2(){
+            this.setPadding(new Insets(10));
+            this.setSpacing(8);
+
+            //Instantiate 2 VBoxes, left VBox and right VBox
+            VBox unSelectModsBox = new VBox();
+            VBox reserveModsBox = new VBox();
+            //Label 1
+            Label lb1 = new Label("Unselected Term 2 modules\n");
+
+            //List view for not selected modules term 1
+            ListView<Module> notSelectedModsList = new ListView<>();
+            notSelectedModsList.setPrefSize(400, 250);
+
+            //Label 2
+            Label lb2 = new Label("Reserve 30 credits worth of modules");
+
+            Label lb3 = new Label("Reserved Term 2 modules\n");
+
+            ListView<Module> reservedModsList = new ListView<>();
+            reservedModsList.setPrefSize(400, 250);
+
+            ButtonBar btns = new ButtonBar();
+            Button btn1 = new Button("Add");
+            Button btn2 = new Button("Remove");
+            Button btn3 = new Button("Confirm");
+
+            btns.getButtons().addAll(btn1, btn2, btn3);
+
+            //Set the spacing for the elements inside each VBox
+            unSelectModsBox.setSpacing(6);
+            reserveModsBox.setSpacing(6);
+
+            //Add each sub node/element to the VBoxes
+            unSelectModsBox.getChildren().addAll(lb1, notSelectedModsList, lb2);
+            reserveModsBox.getChildren().addAll(lb3, reservedModsList, btns);
+
+            //Add the VBoxes to the containing HBox
+            this.getChildren().addAll(unSelectModsBox, reserveModsBox);
         }
     }
 }
