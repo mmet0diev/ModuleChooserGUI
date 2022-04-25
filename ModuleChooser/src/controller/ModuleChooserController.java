@@ -4,10 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogEvent;
-import model.Course;
-import model.Schedule;
+import model.*;
 import model.Module;
-import model.StudentProfile;
 import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
@@ -54,7 +52,13 @@ public class ModuleChooserController {
 	//event handler (currently empty), which can be used for creating a profile
 	private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
 		public void handle(ActionEvent e) {
+			model.setStudentCourse(view.getCreateStudentProfilePane().getSelectedCourse());
+			model.setStudentPnumber(view.getCreateStudentProfilePane().getStudentPnumber());
+			model.setStudentName(view.getCreateStudentProfilePane().getStudentName());
+			model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
+			model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
 
+			
 		}
 	}
 
@@ -63,7 +67,7 @@ public class ModuleChooserController {
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("Information Dialog");
 			alert.setHeaderText(null);
-			alert.setContentText("Meto's about content");
+			alert.setContentText("Meto's about content.\nModule Chooser GUI");
 			alert.show();
 		}
 	}

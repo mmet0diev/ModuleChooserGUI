@@ -9,7 +9,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import model.Module;
 
+import java.util.List;
+
 public class SelectModulesRootPane extends HBox {
+
+    private ListView<Module> unSelectedMods1;
+    private ListView<Module> unSelectedMods2;
+    private ListView<Module> selectedYLongMods;
+    private ListView<Module> selectedMods1;
+    private ListView<Module> selectedMods2;
 
     public SelectModulesRootPane(){
         this.setAlignment(Pos.CENTER);
@@ -29,13 +37,13 @@ public class SelectModulesRootPane extends HBox {
 
             Label lbl1 = new Label("Unselect Term 1 modules");
 
-            ListView<Module> modOptions1 = new ListView<>();
-            modOptions1.setPrefSize(200,150);
+            unSelectedMods1 = new ListView<>();
+            unSelectedMods1.setPrefSize(200,150);
 
             Label lbl2 = new Label("Unselect Term 2 modules");
 
-            ListView<Module> modOptions2 = new ListView<>();
-            modOptions2.setPrefSize(200,150);
+            unSelectedMods2 = new ListView<>();
+            unSelectedMods2.setPrefSize(200,150);
 
             //An HBox made up of: Label, Button, Button
             HBox btnBox1 = new HBox();
@@ -69,13 +77,16 @@ public class SelectModulesRootPane extends HBox {
 
             credBox.getChildren().addAll(lbCredits, credTxtField);
 
+            Button resetBtn = new Button("Reset");
+
             this.getChildren().add(lbl1);
-            this.getChildren().add(modOptions1);
+            this.getChildren().add(unSelectedMods1);
             this.getChildren().add(btnBox1);
             this.getChildren().add(lbl2);
-            this.getChildren().add(modOptions2);
+            this.getChildren().add(unSelectedMods2);
             this.getChildren().add(btnBox2);
             this.getChildren().add(credBox);
+            this.getChildren().add(resetBtn);
         }
     }
 
@@ -89,25 +100,25 @@ public class SelectModulesRootPane extends HBox {
             this.getChildren().add(lbl1);
 
             //Selected Modules for the whole year
-            ListView<Module> selectModules = new ListView<>();
-            selectModules.setPrefSize(150,50);
-            this.getChildren().add(selectModules);
+            selectedYLongMods = new ListView<>();
+            selectedYLongMods.setPrefSize(150,50);
+            this.getChildren().add(selectedYLongMods);
 
             //"Select term 1 modules" label
             Label lbl2 = new Label("Select term 1 modules");
             this.getChildren().add(lbl2);
 
-            ListView<Module> selectModules1 = new ListView<>();
-            selectModules1.setPrefSize(150,150);
-            this.getChildren().add(selectModules1);
+            selectedMods1 = new ListView<>();
+            selectedMods1.setPrefSize(150,150);
+            this.getChildren().add(selectedMods1);
 
             //"Select term 1 modules" label
             Label lbl3 = new Label("Select term 2 modules");
             this.getChildren().add(lbl3);
 
-            ListView<Module> selectModules2 = new ListView<>();
-            selectModules2.setPrefSize(150,150);
-            this.getChildren().add(selectModules2);
+            selectedMods2 = new ListView<>();
+            selectedMods2.setPrefSize(150,150);
+            this.getChildren().add(selectedMods2);
 
             HBox credBox = new HBox();
             credBox.setPadding(new Insets(10));
@@ -119,6 +130,10 @@ public class SelectModulesRootPane extends HBox {
             credBox.getChildren().addAll(lbCredits, credTxtField1);
 
             this.getChildren().add(credBox);
+
+            Button submitBtn = new Button("Submit");
+
+            this.getChildren().add(submitBtn);
         }
     }
 }
