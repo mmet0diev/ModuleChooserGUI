@@ -2,6 +2,8 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.DialogEvent;
 import model.Course;
 import model.Schedule;
 import model.Module;
@@ -9,6 +11,8 @@ import model.StudentProfile;
 import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
+
+import java.awt.*;
 
 public class ModuleChooserController {
 
@@ -40,7 +44,9 @@ public class ModuleChooserController {
 	private void attachEventHandlers() {
 		//attach an event handler to the create student profile pane
 		cspp.addCreateStudentProfileHandler(new CreateStudentProfileHandler());
-		
+
+
+		mstmb.addAboutHandler(new CreateAboutAlert());
 		//attach an event handler to the menu bar that closes the application
 		mstmb.addExitHandler(e -> System.exit(0));
 	}
@@ -49,6 +55,16 @@ public class ModuleChooserController {
 	private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
 		public void handle(ActionEvent e) {
 
+		}
+	}
+
+	private class CreateAboutAlert implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent e){
+			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Information Dialog");
+			alert.setHeaderText(null);
+			alert.setContentText("Meto's about content");
+			alert.show();
 		}
 	}
 
@@ -118,5 +134,4 @@ public class ModuleChooserController {
 
 		return courses;
 	}
-
 }

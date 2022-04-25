@@ -36,14 +36,13 @@ public class ModuleChooserMenuBar extends MenuBar {
 
 		this.getMenus().add(menu);   
 
-
 		menu = new Menu("_Help");
 
 		aboutItem = new MenuItem("_About");
 		aboutItem.setAccelerator(KeyCombination.keyCombination("SHORTCUT+A"));
 		menu.getItems().add(aboutItem);
 
-		this.getMenus().add(menu); 
+		this.getMenus().add(menu);
 	}
 
 	//these methods allow handlers to be externally attached to this menubar and used by the controller

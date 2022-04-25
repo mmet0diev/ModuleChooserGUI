@@ -39,14 +39,26 @@ public class SelectModulesRootPane extends HBox {
 
             //An HBox made up of: Label, Button, Button
             HBox btnBox1 = new HBox();
+            btnBox1.setAlignment(Pos.CENTER);
             btnBox1.setSpacing(20);
 
-            Label lb2 = new Label("Term 1");
-            Button addBtn = new Button("Add");
-            Button rmBtn = new Button("Remove");
+            Label lb1 = new Label("Term 1");
+            Button addBtn1 = new Button("Add");
+            Button rmBtn1 = new Button("Remove");
 
             //add all leaf elements to the HBox
-            btnBox1.getChildren().addAll(lb2, addBtn, rmBtn);
+            btnBox1.getChildren().addAll(lb1, addBtn1, rmBtn1);
+
+            HBox btnBox2 = new HBox();
+
+            btnBox2.setAlignment(Pos.CENTER);
+            btnBox2.setSpacing(20);
+
+            Label lb3 = new Label("Term 2");
+            Button addBtn2 = new Button("Add");
+            Button rmBtn2 = new Button("Remove");
+
+            btnBox2.getChildren().addAll(lb3, addBtn2, rmBtn2);
 
             HBox credBox = new HBox();
             credBox.setPadding(new Insets(10));
@@ -62,15 +74,17 @@ public class SelectModulesRootPane extends HBox {
             this.getChildren().add(btnBox1);
             this.getChildren().add(lbl2);
             this.getChildren().add(modOptions2);
+            this.getChildren().add(btnBox2);
             this.getChildren().add(credBox);
         }
     }
+
     private class RightPaneHalf extends VBox{
         public RightPaneHalf(){
             this.setPadding(new Insets(10));
             this.setAlignment(Pos.CENTER);
 
-            //"Select Year Long Module" label
+            //Select Year Long Module" label
             Label lbl1 = new Label("Selected Year Long modules");
             this.getChildren().add(lbl1);
 
