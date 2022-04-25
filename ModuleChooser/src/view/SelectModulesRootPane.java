@@ -14,15 +14,15 @@ public class SelectModulesRootPane extends HBox {
     public SelectModulesRootPane(){
         this.setAlignment(Pos.CENTER);
 
-        LeftPaneHalfTop topLeft = new LeftPaneHalfTop();
+        LeftPaneHalf topLeft = new LeftPaneHalf();
         RightPaneHalf topRight = new RightPaneHalf();
         this.getChildren().add(topLeft);
         this.getChildren().add(topRight);
 
     }
 
-    private class LeftPaneHalfTop extends VBox{
-        LeftPaneHalfTop(){
+    private class LeftPaneHalf extends VBox{
+        LeftPaneHalf(){
             this.setAlignment(Pos.CENTER);
             this.setPadding(new Insets(20));
             this.setSpacing(10);
@@ -39,6 +39,7 @@ public class SelectModulesRootPane extends HBox {
 
             //An HBox made up of: Label, Button, Button
             HBox btnBox1 = new HBox();
+            btnBox1.setSpacing(20);
 
             Label lb2 = new Label("Term 1");
             Button addBtn = new Button("Add");

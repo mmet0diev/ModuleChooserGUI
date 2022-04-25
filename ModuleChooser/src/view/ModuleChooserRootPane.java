@@ -50,7 +50,6 @@ public class ModuleChooserRootPane extends BorderPane {
 		//add menu bar and tab pane to this root pane
 		this.setTop(mcmb);
 		this.setCenter(tp);
-		
 	}
 
 	//methods allowing sub-containers to be accessed by the controller.
