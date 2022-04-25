@@ -32,7 +32,7 @@ public class SelectModulesRootPane extends HBox {
     }
 
     private class LeftPaneHalf extends VBox{
-        LeftPaneHalf(){
+        private LeftPaneHalf(){
             this.setAlignment(Pos.CENTER);
             this.setPadding(new Insets(20));
             this.setSpacing(10);
@@ -93,7 +93,7 @@ public class SelectModulesRootPane extends HBox {
     }
 
     private class RightPaneHalf extends VBox{
-        public RightPaneHalf(){
+        private RightPaneHalf(){
             this.setPadding(new Insets(10));
             this.setAlignment(Pos.CENTER);
 
@@ -137,6 +137,6 @@ public class SelectModulesRootPane extends HBox {
 
             this.getChildren().add(submitBtn);
         }
-
     }
+
 }

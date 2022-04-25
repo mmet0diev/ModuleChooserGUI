@@ -57,7 +57,7 @@ public class ModuleChooserController {
 			model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
 			model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
 
-			ObservableList<Module> modsList = FXCollections.observableArrayList();
+
 		}
 	}
 
