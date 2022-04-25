@@ -1,5 +1,7 @@
 package view;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -135,5 +137,6 @@ public class SelectModulesRootPane extends HBox {
 
             this.getChildren().add(submitBtn);
         }
+
     }
 }

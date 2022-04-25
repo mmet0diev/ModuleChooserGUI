@@ -1,16 +1,15 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
-import javafx.scene.control.DialogEvent;
 import model.*;
 import model.Module;
 import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
-
-import java.awt.*;
 
 public class ModuleChooserController {
 
@@ -19,7 +18,7 @@ public class ModuleChooserController {
 	private StudentProfile model;
 	
 	private CreateStudentProfilePane cspp;
-	private ModuleChooserMenuBar mstmb;
+	private ModuleChooserMenuBar mcmb;
 
 	public ModuleChooserController(ModuleChooserRootPane view, StudentProfile model) {
 		//initialise view and model fields
@@ -28,7 +27,7 @@ public class ModuleChooserController {
 		
 		//initialise view subcontainer fields
 		cspp = view.getCreateStudentProfilePane();
-		mstmb = view.getModuleSelectionToolMenuBar();
+		mcmb = view.getModuleSelectionToolMenuBar();
 
 		//add courses to combobox in create student profile pane using the generateAndGetCourses helper method below
 		cspp.addCoursesToComboBox(generateAndGetCourses());
@@ -44,9 +43,9 @@ public class ModuleChooserController {
 		cspp.addCreateStudentProfileHandler(new CreateStudentProfileHandler());
 
 
-		mstmb.addAboutHandler(new CreateAboutAlert());
+		mcmb.addAboutHandler(new CreateAboutAlert());
 		//attach an event handler to the menu bar that closes the application
-		mstmb.addExitHandler(e -> System.exit(0));
+		mcmb.addExitHandler(e -> System.exit(0));
 	}
 	
 	//event handler (currently empty), which can be used for creating a profile
@@ -58,7 +57,7 @@ public class ModuleChooserController {
 			model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
 			model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
 
-			
+			ObservableList<Module> modsList = FXCollections.observableArrayList();
 		}
 	}
 
