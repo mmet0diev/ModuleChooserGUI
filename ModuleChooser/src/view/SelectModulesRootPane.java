@@ -235,4 +235,5 @@ public class SelectModulesRootPane extends HBox {
     public void addResetBtnHandler(EventHandler<ActionEvent> handler){
         resetBtn.setOnAction(handler);
     }
+
 }

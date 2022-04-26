@@ -1,7 +1,5 @@
 package controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -10,6 +8,7 @@ import model.Module;
 import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
+
 
 public class ModuleChooserController {
 
@@ -42,7 +41,8 @@ public class ModuleChooserController {
 		//attach an event handler to the create student profile pane
 		cspp.addCreateStudentProfileHandler(new CreateStudentProfileHandler());
 
-		//An information alert whenever one clicks teh "about" menuitem in the about menu.
+
+		//An information alert whenever one clicks the "about" menuitem in the about menu.
 		mcmb.addAboutHandler(new CreateAboutAlert());
 
 		//attach an event handler to the menu bar that closes the application
@@ -64,6 +64,31 @@ public class ModuleChooserController {
 				view.getSelectModulesPane().PopulateListViews(model.getStudentCourse());
 				view.getSelectModulesPane().setCreated(true);
 			}
+		}
+	}
+
+	//Add Handler..
+	private class AddModsHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent e){
+			
+		}
+	}
+	//Remove Handler..
+	private class RemoveModsHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent e){
+
+		}
+	}
+	//Reset Handler..
+	private class ResetHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent e){
+
+		}
+	}
+	//Submit Handler..
+	private class SubmitHandler implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent e){
+
 		}
 	}
 
