@@ -22,6 +22,8 @@ public class SelectModulesRootPane extends HBox {
     private ListView<Module> selectedYLongMods;
     private ListView<Module> selectedMods1;
     private ListView<Module> selectedMods2;
+    private Button addBtn1, rmBtn1, submitBtn, addBtn2, rmBtn2 ,resetBtn;
+    private TextField credTxtField1, credTxtField2;
     private boolean created;
 
     public SelectModulesRootPane(){
@@ -40,12 +42,12 @@ public class SelectModulesRootPane extends HBox {
             this.setPadding(new Insets(20));
             this.setSpacing(10);
 
-            Label lbl1 = new Label("Unselect Term 1 modules");
+            Label lbl1 = new Label("Unselected Term 1 modules");
 
             unSelectedMods1 = new ListView<>();
             unSelectedMods1.setPrefSize(200,150);
 
-            Label lbl2 = new Label("Unselect Term 2 modules");
+            Label lbl2 = new Label("Unselected Term 2 modules");
 
             unSelectedMods2 = new ListView<>();
             unSelectedMods2.setPrefSize(200,150);
@@ -56,8 +58,8 @@ public class SelectModulesRootPane extends HBox {
             btnBox1.setSpacing(20);
 
             Label lb1 = new Label("Term 1");
-            Button addBtn1 = new Button("Add");
-            Button rmBtn1 = new Button("Remove");
+            addBtn1 = new Button("Add");
+            rmBtn1 = new Button("Remove");
 
             //add all leaf elements to the HBox
             btnBox1.getChildren().addAll(lb1, addBtn1, rmBtn1);
@@ -68,8 +70,8 @@ public class SelectModulesRootPane extends HBox {
             btnBox2.setSpacing(20);
 
             Label lb3 = new Label("Term 2");
-            Button addBtn2 = new Button("Add");
-            Button rmBtn2 = new Button("Remove");
+            addBtn2 = new Button("Add");
+            rmBtn2 = new Button("Remove");
 
             btnBox2.getChildren().addAll(lb3, addBtn2, rmBtn2);
 
@@ -78,11 +80,11 @@ public class SelectModulesRootPane extends HBox {
             credBox.setSpacing(6);
 
             Label lbCredits = new Label("Current Term 1 credits");
-            TextField credTxtField = new TextField();
+            credTxtField1 = new TextField();
 
-            credBox.getChildren().addAll(lbCredits, credTxtField);
+            credBox.getChildren().addAll(lbCredits, credTxtField1);
 
-            Button resetBtn = new Button("Reset");
+            resetBtn = new Button("Reset");
 
             this.getChildren().add(lbl1);
             this.getChildren().add(unSelectedMods1);
@@ -130,13 +132,13 @@ public class SelectModulesRootPane extends HBox {
             credBox.setSpacing(6);
 
             Label lbCredits = new Label("Current Term 2 credits");
-            TextField credTxtField1 = new TextField();
+            credTxtField2 = new TextField();
 
-            credBox.getChildren().addAll(lbCredits, credTxtField1);
+            credBox.getChildren().addAll(lbCredits, credTxtField2);
 
             this.getChildren().add(credBox);
 
-            Button submitBtn = new Button("Submit");
+            submitBtn = new Button("Submit");
 
             this.getChildren().add(submitBtn);
         }
@@ -203,22 +205,12 @@ public class SelectModulesRootPane extends HBox {
     private void AddSelectedMods2(Course course){
         selectedMods2.getItems().add(course.getModuleByCode("CTEC3902"));
     }
+
     public void setCreated(boolean created){
         this.created = created;
     }
+
     public boolean getCreated(){
         return created;
     }
-//    public void AddUnSelectedMods1(Course[] courses) {
-//        for (Course course: courses) {
-//            if(course.getCourseName().equals("Software Engineering")){
-//                for (Module mod:
-//                     course.getAllModulesOnCourse()) {
-//                    if(!mod.getModuleCode().equals("CTEC3451")){
-//                        unSelectedMods1.getItems().add(mod);
-//                    }
-//                }
-//            }
-//        }
-//    }
 }

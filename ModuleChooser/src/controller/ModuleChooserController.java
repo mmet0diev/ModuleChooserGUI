@@ -58,6 +58,8 @@ public class ModuleChooserController {
 			model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
 			model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
 
+			System.out.println(model);
+
 			if(!view.getSelectModulesPane().getCreated()) {
 				view.getSelectModulesPane().PopulateListViews(model.getStudentCourse());
 				view.getSelectModulesPane().setCreated(true);

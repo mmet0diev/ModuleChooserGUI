@@ -93,9 +93,9 @@ public class StudentProfile {
 	public String toString() {
 		return "StudentProfile:[Pnumber=" + studentPnumber + ", studentName="
 				+ studentName + ", studentEmail=" + studentEmail + ", studentDate="
-				+ studentDate + ", studentCourse=" + studentCourse.actualToString() 
-				+ ", selectedModules=" + selectedModules
-				+ ", reservedModules=" + reservedModules + "]";
+				+ studentDate + "\n, studentCourse=" + studentCourse.actualToString()
+				+ "\n, selectedModules=" + selectedModules
+				+ "\n, reservedModules=" + reservedModules + "]";
 	}
 	
 }
