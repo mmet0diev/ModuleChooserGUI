@@ -106,8 +106,7 @@ public class CreateStudentProfilePane extends GridPane {
 	public LocalDate getStudentDate() {
 		return inputDate.getValue();
 	}
-	
-	
+
 	//method to attach the create student profile button event handler
 	public void addCreateStudentProfileHandler(EventHandler<ActionEvent> handler) {
 		btnCreateProfile.setOnAction(handler);

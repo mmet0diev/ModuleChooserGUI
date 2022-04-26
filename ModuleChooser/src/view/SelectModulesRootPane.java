@@ -9,7 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import model.Course;
 import model.Module;
+import model.Schedule;
 
 import java.util.List;
 
@@ -138,23 +140,67 @@ public class SelectModulesRootPane extends HBox {
             this.getChildren().add(submitBtn);
         }
     }
-    public ListView<Module> getUnSelectedMods1(){
-        return unSelectedMods1;
+
+    public void PopulateListViews(Course course){
+        AddUSelectMods1(course);
+        AddUSelectMods2(course);
+        AddSelectYLMods(course);
     }
 
-    public ListView<Module> getUnSelectedMods2(){
-        return unSelectedMods2;
+    private void AddUSelectMods1(Course course){
+        for (Module mod: course.getAllModulesOnCourse()) {
+            if(course.getCourseName().equals("Software Engineering")
+            && !mod.getModuleCode().equals("CTEC3451")) {
+                if(mod.getDelivery().equals(Schedule.TERM_1)) {
+                    unSelectedMods1.getItems().add(mod);
+                }
+            }
+        }
     }
 
-    public ListView<Module> getSelectedYLongMods(){
-        return selectedYLongMods;
+    private void AddUSelectMods2(Course course){
+        for (Module mod: course.getAllModulesOnCourse()) {
+            if(course.getCourseName().equals("Software Engineering")
+            && !mod.getModuleCode().equals("CTEC3451")) {
+                if(mod.getDelivery().equals(Schedule.TERM_2)) {
+                    unSelectedMods2.getItems().add(mod);
+                }
+            }
+        }
     }
 
-    public ListView<Module> getSelectedMods1(){
-        return selectedMods1;
+    private void AddSelectYLMods(Course course){
+        for (Module mod: course.getAllModulesOnCourse()) {
+            if(course.getCourseName().equals("Software Engineering")
+                    && mod.getModuleCode().equals("CTEC3451")){
+                selectedYLongMods.getItems().add(mod);
+            }
+        }
     }
 
-    public ListView<Module> getSelectedMods2(){
-        return selectedMods2;
+    private void AddSelectedMods1(Course course){
+        for (Module mod: course.getAllModulesOnCourse()) {
+            selectedMods1.getItems().add(mod);
+        }
     }
+
+    private void AddSelectedMods2(Course course){
+        for (Module mod: course.getAllModulesOnCourse()) {
+            selectedMods2.getItems().add(mod);
+        }
+    }
+
+
+//    public void AddUnSelectedMods1(Course[] courses) {
+//        for (Course course: courses) {
+//            if(course.getCourseName().equals("Software Engineering")){
+//                for (Module mod:
+//                     course.getAllModulesOnCourse()) {
+//                    if(!mod.getModuleCode().equals("CTEC3451")){
+//                        unSelectedMods1.getItems().add(mod);
+//                    }
+//                }
+//            }
+//        }
+//    }
 }

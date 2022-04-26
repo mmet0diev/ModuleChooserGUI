@@ -60,7 +60,10 @@ public class ModuleChooserRootPane extends BorderPane {
 	public ModuleChooserMenuBar getModuleSelectionToolMenuBar() {
 		return mcmb;
 	}
-	
+
+	public SelectModulesRootPane getSelectModulesPane(){ return selectModsPane;	}
+
+
 	//method to allow the controller to change tabs
 	public void changeTab(int index) {
 		tp.getSelectionModel().select(index);

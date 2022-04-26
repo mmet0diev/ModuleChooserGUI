@@ -32,11 +32,11 @@ public class ModuleChooserController {
 		//add courses to combobox in create student profile pane using the generateAndGetCourses helper method below
 		cspp.addCoursesToComboBox(generateAndGetCourses());
 
+
 		//attach event handlers to view using private helper method
 		this.attachEventHandlers();	
 	}
 
-	
 	//helper method - used to attach event handlers
 	private void attachEventHandlers() {
 		//attach an event handler to the create student profile pane
@@ -58,7 +58,7 @@ public class ModuleChooserController {
 			model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
 			model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
 
-
+			view.getSelectModulesPane().PopulateListViews(model.getStudentCourse());
 		}
 	}
 
@@ -137,5 +137,4 @@ public class ModuleChooserController {
 
 		return courses;
 	}
-
 }
