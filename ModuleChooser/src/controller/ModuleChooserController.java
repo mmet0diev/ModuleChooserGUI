@@ -70,7 +70,7 @@ public class ModuleChooserController {
 	//Add Handler..
 	private class AddModsHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent e){
-			
+
 		}
 	}
 	//Remove Handler..

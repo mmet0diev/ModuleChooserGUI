@@ -1,7 +1,5 @@
 package view;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -15,7 +13,6 @@ import model.Course;
 import model.Module;
 import model.Schedule;
 
-import java.util.List;
 
 public class SelectModulesRootPane extends HBox {
 
@@ -114,7 +111,7 @@ public class SelectModulesRootPane extends HBox {
             this.getChildren().add(selectedYLongMods);
 
             //"Select term 1 modules" label
-            Label lbl2 = new Label("Select term 1 modules");
+            Label lbl2 = new Label("Selected term 1 modules");
             this.getChildren().add(lbl2);
 
             selectedMods1 = new ListView<>();
@@ -122,7 +119,7 @@ public class SelectModulesRootPane extends HBox {
             this.getChildren().add(selectedMods1);
 
             //"Select term 1 modules" label
-            Label lbl3 = new Label("Select term 2 modules");
+            Label lbl3 = new Label("Selected term 2 modules");
             this.getChildren().add(lbl3);
 
             selectedMods2 = new ListView<>();
@@ -157,12 +154,12 @@ public class SelectModulesRootPane extends HBox {
     private void AddUSelectMods1(Course course){
         for (Module mod: course.getAllModulesOnCourse()) {
             if(course.getCourseName().equals("Software Engineering")
-            && !mod.getModuleCode().equals("CTEC3451")) {
+            && !mod.isMandatory()) {
                 if(mod.getDelivery().equals(Schedule.TERM_1)) {
                     unSelectedMods1.getItems().add(mod);
                 }
             }else if(course.getCourseName().equals("Computer Science")
-            && !mod.getModuleCode().equals("CTEC3451")){
+            && !mod.isMandatory()){
                 if(mod.getDelivery().equals(Schedule.TERM_1)){
                     unSelectedMods1.getItems().add(mod);
                 }
@@ -173,7 +170,7 @@ public class SelectModulesRootPane extends HBox {
     private void AddUSelectMods2(Course course){
         for (Module mod: course.getAllModulesOnCourse()) {
             if(course.getCourseName().equals("Software Engineering")
-            && !mod.getModuleCode().equals("CTEC3451")) {
+            && !mod.isMandatory()) {
                 if(mod.getDelivery().equals(Schedule.TERM_2)) {
                     unSelectedMods2.getItems().add(mod);
                 }
@@ -201,11 +198,33 @@ public class SelectModulesRootPane extends HBox {
     }
 
     private void AddSelectedMods1(Course course){
-        selectedMods1.getItems().add(course.getModuleByCode("IMAT3423"));
+        for (Module mod: course.getAllModulesOnCourse()) {
+            if(course.getCourseName().equals("Software Engineering")){
+                if(mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_1)){
+                    selectedMods1.getItems().add(mod);
+                }
+            }
+            if(course.getCourseName().equals("Computer Science")){
+                if(mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_1)){
+                    selectedMods1.getItems().add(mod);
+                }
+            }
+        }
     }
 
     private void AddSelectedMods2(Course course){
-        selectedMods2.getItems().add(course.getModuleByCode("CTEC3902"));
+        for (Module mod: course.getAllModulesOnCourse()) {
+            if(course.getCourseName().equals("Software Engineering")){
+                if(mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_2)){
+                    selectedMods2.getItems().add(mod);
+                }
+            }
+            if(course.getCourseName().equals("Computer Science")){
+                if(mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_2)){
+                    selectedMods2.getItems().add(mod);
+                }
+            }
+        }
     }
 
     public void setCreated(boolean created){
