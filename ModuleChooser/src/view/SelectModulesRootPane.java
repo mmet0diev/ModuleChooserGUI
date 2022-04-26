@@ -2,6 +2,8 @@ package view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -212,5 +214,25 @@ public class SelectModulesRootPane extends HBox {
 
     public boolean getCreated(){
         return created;
+    }
+
+    //Methods for external use of the handlers in the controller
+    public void addAddBtnHandler1(EventHandler<ActionEvent> handler){
+        addBtn1.setOnAction(handler);
+    }
+    public void addRmBtnHandler1(EventHandler<ActionEvent> handler){
+        rmBtn1.setOnAction(handler);
+    }
+    public void addSubmitBtnHandler(EventHandler<ActionEvent> handler){
+        submitBtn.setOnAction(handler);
+    }
+    public void addAddBtnHandler2(EventHandler<ActionEvent> handler){
+        addBtn2.setOnAction(handler);
+    }
+    public void addRmBtnHandler2(EventHandler<ActionEvent> handler){
+        rmBtn2.setOnAction(handler);
+    }
+    public void addResetBtnHandler(EventHandler<ActionEvent> handler){
+        resetBtn.setOnAction(handler);
     }
 }
