@@ -22,6 +22,7 @@ public class SelectModulesRootPane extends HBox {
     private ListView<Module> selectedYLongMods;
     private ListView<Module> selectedMods1;
     private ListView<Module> selectedMods2;
+    private boolean created;
 
     public SelectModulesRootPane(){
         this.setAlignment(Pos.CENTER);
@@ -145,6 +146,8 @@ public class SelectModulesRootPane extends HBox {
         AddUSelectMods1(course);
         AddUSelectMods2(course);
         AddSelectYLMods(course);
+        AddSelectedMods1(course);
+        AddSelectedMods2(course);
     }
 
     private void AddUSelectMods1(Course course){
@@ -152,6 +155,11 @@ public class SelectModulesRootPane extends HBox {
             if(course.getCourseName().equals("Software Engineering")
             && !mod.getModuleCode().equals("CTEC3451")) {
                 if(mod.getDelivery().equals(Schedule.TERM_1)) {
+                    unSelectedMods1.getItems().add(mod);
+                }
+            }else if(course.getCourseName().equals("Computer Science")
+            && !mod.getModuleCode().equals("CTEC3451")){
+                if(mod.getDelivery().equals(Schedule.TERM_1)){
                     unSelectedMods1.getItems().add(mod);
                 }
             }
@@ -165,32 +173,42 @@ public class SelectModulesRootPane extends HBox {
                 if(mod.getDelivery().equals(Schedule.TERM_2)) {
                     unSelectedMods2.getItems().add(mod);
                 }
+            }else if(course.getCourseName().equals("Computer Science")
+                    && !mod.getModuleCode().equals("CTEC3451")) {
+                if(mod.getDelivery().equals(Schedule.TERM_2)) {
+                    unSelectedMods2.getItems().add(mod);
+                }
             }
         }
     }
 
     private void AddSelectYLMods(Course course){
         for (Module mod: course.getAllModulesOnCourse()) {
-            if(course.getCourseName().equals("Software Engineering")
-                    && mod.getModuleCode().equals("CTEC3451")){
-                selectedYLongMods.getItems().add(mod);
+            if(course.getCourseName().equals("Software Engineering")) {
+                if (mod.getDelivery().equals(Schedule.YEAR_LONG)) {
+                    selectedYLongMods.getItems().add(mod);
+                }
+            }else if(course.getCourseName().equals("Computer Science")){
+                if(mod.getDelivery().equals(Schedule.YEAR_LONG)){
+                    selectedYLongMods.getItems().add(mod);
+                }
             }
         }
     }
 
     private void AddSelectedMods1(Course course){
-        for (Module mod: course.getAllModulesOnCourse()) {
-            selectedMods1.getItems().add(mod);
-        }
+        selectedMods1.getItems().add(course.getModuleByCode("IMAT3423"));
     }
 
     private void AddSelectedMods2(Course course){
-        for (Module mod: course.getAllModulesOnCourse()) {
-            selectedMods2.getItems().add(mod);
-        }
+        selectedMods2.getItems().add(course.getModuleByCode("CTEC3902"));
     }
-
-
+    public void setCreated(boolean created){
+        this.created = created;
+    }
+    public boolean getCreated(){
+        return created;
+    }
 //    public void AddUnSelectedMods1(Course[] courses) {
 //        for (Course course: courses) {
 //            if(course.getCourseName().equals("Software Engineering")){
