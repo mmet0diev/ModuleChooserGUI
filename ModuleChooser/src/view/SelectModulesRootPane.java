@@ -138,5 +138,23 @@ public class SelectModulesRootPane extends HBox {
             this.getChildren().add(submitBtn);
         }
     }
+    public ListView<Module> getUnSelectedMods1(){
+        return unSelectedMods1;
+    }
 
+    public ListView<Module> getUnSelectedMods2(){
+        return unSelectedMods2;
+    }
+
+    public ListView<Module> getSelectedYLongMods(){
+        return selectedYLongMods;
+    }
+
+    public ListView<Module> getSelectedMods1(){
+        return selectedMods1;
+    }
+
+    public ListView<Module> getSelectedMods2(){
+        return selectedMods2;
+    }
 }

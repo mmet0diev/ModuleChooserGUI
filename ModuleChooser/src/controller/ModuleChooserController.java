@@ -42,8 +42,9 @@ public class ModuleChooserController {
 		//attach an event handler to the create student profile pane
 		cspp.addCreateStudentProfileHandler(new CreateStudentProfileHandler());
 
-
+		//An information alert whenever one clicks teh "about" menuitem in the about menu.
 		mcmb.addAboutHandler(new CreateAboutAlert());
+
 		//attach an event handler to the menu bar that closes the application
 		mcmb.addExitHandler(e -> System.exit(0));
 	}
@@ -70,7 +71,6 @@ public class ModuleChooserController {
 			alert.show();
 		}
 	}
-
 
 	//helper method - generates course and module data and returns courses within an array
 	private Course[] generateAndGetCourses() {
@@ -137,4 +137,5 @@ public class ModuleChooserController {
 
 		return courses;
 	}
+
 }

@@ -26,12 +26,14 @@ public class ModuleChooserRootPane extends BorderPane {
 		//create tab pane and disable tabs from being closed
 		tp = new TabPane();
 		tp.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-		op = new OverviewPane();
+
 
 		//create panes
 		cspp = new CreateStudentProfilePane();
 		selectModsPane = new SelectModulesRootPane();
 		reserveModsPane = new ReserveModsRootPane();
+		op = new OverviewPane();
+
 
 		//create tabs with panes added
 		Tab t1 = new Tab("Create Profile", cspp);
