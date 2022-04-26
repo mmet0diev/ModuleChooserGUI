@@ -175,7 +175,7 @@ public class SelectModulesRootPane extends HBox {
                     unSelectedMods2.getItems().add(mod);
                 }
             }else if(course.getCourseName().equals("Computer Science")
-                    && !mod.getModuleCode().equals("CTEC3451")) {
+                    && !mod.isMandatory()) {
                 if(mod.getDelivery().equals(Schedule.TERM_2)) {
                     unSelectedMods2.getItems().add(mod);
                 }
