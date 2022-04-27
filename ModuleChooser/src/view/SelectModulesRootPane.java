@@ -20,6 +20,7 @@ public class SelectModulesRootPane extends HBox {
     private Button addBtn1, rmBtn1, submitBtn, addBtn2, rmBtn2 ,resetBtn;
     private TextField credTxtField1, credTxtField2;
     private boolean created;
+    private int credits;
 
     public SelectModulesRootPane(){
         this.setAlignment(Pos.CENTER);
@@ -223,6 +224,21 @@ public class SelectModulesRootPane extends HBox {
         }
     }
 
+    public ListView<Module> getUnSelectedMods1(){
+        return unSelectedMods1;
+    }
+    public ListView<Module> getUnSelectedMods2(){
+        return unSelectedMods2;
+    }
+    public ListView<Module> getSelectedYLongMods(){
+        return selectedYLongMods;
+    }
+    public ListView<Module> getSelectedMods1(){
+        return selectedMods1;
+    }
+    public ListView<Module> getSelectedMods2(){
+        return selectedMods2;
+    }
 
     public void setCreated(boolean created){
         this.created = created;
