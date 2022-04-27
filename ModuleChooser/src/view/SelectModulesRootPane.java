@@ -16,11 +16,7 @@ import model.Schedule;
 
 public class SelectModulesRootPane extends HBox {
 
-    private ListView<Module> unSelectedMods1;
-    private ListView<Module> unSelectedMods2;
-    private ListView<Module> selectedYLongMods;
-    private ListView<Module> selectedMods1;
-    private ListView<Module> selectedMods2;
+    private ListView<Module> unSelectedMods1, unSelectedMods2, selectedYLongMods, selectedMods1, selectedMods2;
     private Button addBtn1, rmBtn1, submitBtn, addBtn2, rmBtn2 ,resetBtn;
     private TextField credTxtField1, credTxtField2;
     private boolean created;
@@ -226,6 +222,7 @@ public class SelectModulesRootPane extends HBox {
             }
         }
     }
+
 
     public void setCreated(boolean created){
         this.created = created;

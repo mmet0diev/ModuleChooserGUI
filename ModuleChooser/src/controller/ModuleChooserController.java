@@ -18,6 +18,7 @@ public class ModuleChooserController {
 	
 	private CreateStudentProfilePane cspp;
 	private ModuleChooserMenuBar mcmb;
+	private int creditsSum;
 
 	public ModuleChooserController(ModuleChooserRootPane view, StudentProfile model) {
 		//initialise view and model fields
@@ -58,7 +59,9 @@ public class ModuleChooserController {
 			model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
 			model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
 
-			System.out.println(model);
+            System.out.println(model);
+
+			System.out.println(model.getAllSelectedModules());
 
 			if(!view.getSelectModulesPane().getCreated()) {
 				view.getSelectModulesPane().PopulateListViews(model.getStudentCourse());
