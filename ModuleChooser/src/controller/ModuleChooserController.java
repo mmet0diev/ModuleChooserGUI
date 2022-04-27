@@ -42,13 +42,17 @@ public class ModuleChooserController {
         //attach an event handler to the create student profile pane
         cspp.addCreateStudentProfileHandler(new CreateStudentProfileHandler());
 
-        view.getSelectModulesPane().addAddBtnHandler1(new AddModsHandler());
+        //attach event handler to addBtn1
+        view.getSelectModulesPane().addAddBtnHandler1(new AddModsHandler1());
 
-        view.getSelectModulesPane().addRmBtnHandler1(new RemoveModsHandler());
+        //attach event handler to rmBtn1
+        view.getSelectModulesPane().addRmBtnHandler1(new RemoveModsHandler1());
 
-        view.getSelectModulesPane().addAddBtnHandler2(new AddModsHandler());
+        //attach event handler to addBtn2
+        view.getSelectModulesPane().addAddBtnHandler2(new AddModsHandler2());
 
-        view.getSelectModulesPane().addRmBtnHandler2(new RemoveModsHandler());
+        //attach event handler to rmBtn2
+        view.getSelectModulesPane().addRmBtnHandler2(new RemoveModsHandler2());
 
         //An information alert whenever one clicks the "about" menuitem in the about menu.
         mcmb.addAboutHandler(new CreateAboutAlert());
@@ -75,13 +79,9 @@ public class ModuleChooserController {
         }
     }
 
-    //Add Handler..
-    private class AddModsHandler implements EventHandler<ActionEvent> {
+    //Add Handlers..
+    private class AddModsHandler1 implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
-            handle1();
-            handle2();
-        }
-        private void handle1(){
             Module selectedMod =
                     view.getSelectModulesPane().getUnSelectedMods1().getSelectionModel().getSelectedItem();
 
@@ -92,7 +92,10 @@ public class ModuleChooserController {
                 }
             }
         }
-        private void handle2(){
+    }
+
+    private class AddModsHandler2 implements EventHandler<ActionEvent>{
+        public void handle(ActionEvent e){
             Module selectedMod =
                     view.getSelectModulesPane().getUnSelectedMods2().getSelectionModel().getSelectedItem();
 
@@ -102,16 +105,13 @@ public class ModuleChooserController {
                     view.getSelectModulesPane().getUnSelectedMods2().getItems().remove(selectedMod);
                 }
             }
+
         }
     }
 
-    //Remove Handler..
-    private class RemoveModsHandler implements EventHandler<ActionEvent> {
+    //Remove Handlers..
+    private class RemoveModsHandler1 implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
-            handle1();
-            handle2();
-        }
-        private void handle1(){
             Module selectedMod =
                     view.getSelectModulesPane().getSelectedMods1().getSelectionModel().getSelectedItem();
 
@@ -120,7 +120,10 @@ public class ModuleChooserController {
                 view.getSelectModulesPane().getUnSelectedMods1().getItems().add(selectedMod);
             }
         }
-        private void handle2(){
+    }
+
+    private class RemoveModsHandler2 implements EventHandler<ActionEvent>{
+        public void handle(ActionEvent e){
             Module selectedMod =
                     view.getSelectModulesPane().getSelectedMods2().getSelectionModel().getSelectedItem();
 
@@ -128,6 +131,7 @@ public class ModuleChooserController {
                 view.getSelectModulesPane().getSelectedMods2().getItems().remove(selectedMod);
                 view.getSelectModulesPane().getUnSelectedMods2().getItems().add(selectedMod);
             }
+
         }
     }
 
