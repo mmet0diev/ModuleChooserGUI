@@ -18,7 +18,7 @@ public class ModuleChooserController {
 
     private CreateStudentProfilePane cspp;
     private ModuleChooserMenuBar mcmb;
-    private int credits;
+    private int totalCredits;
 
     public ModuleChooserController(ModuleChooserRootPane view, StudentProfile model) {
         //initialise view and model fields
@@ -73,8 +73,6 @@ public class ModuleChooserController {
             model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
             model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
 
-            System.out.println(model);
-
             if (!view.getSelectModulesPane().getCreated()) {
                 view.getSelectModulesPane().InitPopulateListViews(model.getStudentCourse());
                 view.getSelectModulesPane().setCreated(true);
@@ -86,12 +84,12 @@ public class ModuleChooserController {
     private class AddModsHandler1 implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
             Module selectedMod =
-                    view.getSelectModulesPane().getUnSelectedMods1().getSelectionModel().getSelectedItem();
+                    view.getSelectModulesPane().getUnselectedMods1().getSelectionModel().getSelectedItem();
 
-            if (view.getSelectModulesPane().getUnSelectedMods1().getItems().contains(selectedMod)) {
+            if (view.getSelectModulesPane().getUnselectedMods1().getItems().contains(selectedMod)) {
                 if (!view.getSelectModulesPane().getSelectedMods1().getItems().contains(selectedMod)) {
                     view.getSelectModulesPane().getSelectedMods1().getItems().add(selectedMod);
-                    view.getSelectModulesPane().getUnSelectedMods1().getItems().remove(selectedMod);
+                    view.getSelectModulesPane().getUnselectedMods1().getItems().remove(selectedMod);
                 }
             }
         }
@@ -118,8 +116,10 @@ public class ModuleChooserController {
                     view.getSelectModulesPane().getSelectedMods1().getSelectionModel().getSelectedItem();
 
             if (view.getSelectModulesPane().getSelectedMods1().getItems().contains(selectedMod)) {
-                view.getSelectModulesPane().getSelectedMods1().getItems().remove(selectedMod);
-                view.getSelectModulesPane().getUnSelectedMods1().getItems().add(selectedMod);
+                if(!selectedMod.isMandatory()) {
+                    view.getSelectModulesPane().getSelectedMods1().getItems().remove(selectedMod);
+                    view.getSelectModulesPane().getUnselectedMods1().getItems().add(selectedMod);
+                }
             }
         }
     }
@@ -130,8 +130,10 @@ public class ModuleChooserController {
                     view.getSelectModulesPane().getSelectedMods2().getSelectionModel().getSelectedItem();
 
             if (view.getSelectModulesPane().getSelectedMods2().getItems().contains(selectedMod)) {
-                view.getSelectModulesPane().getSelectedMods2().getItems().remove(selectedMod);
-                view.getSelectModulesPane().getUnSelectedMods2().getItems().add(selectedMod);
+                if (!selectedMod.isMandatory()) {
+                    view.getSelectModulesPane().getSelectedMods2().getItems().remove(selectedMod);
+                    view.getSelectModulesPane().getUnSelectedMods2().getItems().add(selectedMod);
+                }
             }
         }
     }
@@ -146,7 +148,7 @@ public class ModuleChooserController {
         }
 
         private void clearListViews() {
-            view.getSelectModulesPane().getUnSelectedMods1().getItems().clear();
+            view.getSelectModulesPane().getUnselectedMods1().getItems().clear();
             view.getSelectModulesPane().getSelectedMods1().getItems().clear();
             view.getSelectModulesPane().getUnSelectedMods2().getItems().clear();
             view.getSelectModulesPane().getSelectedMods2().getItems().clear();

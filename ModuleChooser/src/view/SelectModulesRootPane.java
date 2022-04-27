@@ -15,14 +15,14 @@ import model.Schedule;
 
 
 public class SelectModulesRootPane extends HBox {
-
-    private ListView<Module> unSelectedMods1, unSelectedMods2, selectedYLongMods, selectedMods1, selectedMods2;
-    private Button addBtn1, rmBtn1, submitBtn, addBtn2, rmBtn2 ,resetBtn;
+    //Note, the numbers 1 and 2 after each var name mostly stand for either "Term 1" or "Term 2"
+    private ListView<Module> unselectedMods1, unselectedMods2, selectedYLongMods, selectedMods1, selectedMods2;
+    private Button addBtn1, rmBtn1, submitBtn, addBtn2, rmBtn2, resetBtn;
     private TextField credTxtField1, credTxtField2;
     private boolean created;
-    private int credits;
+    private int credits1, credits2;
 
-    public SelectModulesRootPane(){
+    public SelectModulesRootPane() {
         this.setAlignment(Pos.CENTER);
 
         LeftPaneHalf topLeft = new LeftPaneHalf();
@@ -32,21 +32,21 @@ public class SelectModulesRootPane extends HBox {
 
     }
 
-    private class LeftPaneHalf extends VBox{
-        private LeftPaneHalf(){
+    private class LeftPaneHalf extends VBox {
+        private LeftPaneHalf() {
             this.setAlignment(Pos.CENTER);
             this.setPadding(new Insets(20));
             this.setSpacing(10);
 
             Label lbl1 = new Label("Unselected Term 1 modules");
 
-            unSelectedMods1 = new ListView<>();
-            unSelectedMods1.setPrefSize(200,150);
+            unselectedMods1 = new ListView<>();
+            unselectedMods1.setPrefSize(200, 150);
 
             Label lbl2 = new Label("Unselected Term 2 modules");
 
-            unSelectedMods2 = new ListView<>();
-            unSelectedMods2.setPrefSize(200,150);
+            unselectedMods2 = new ListView<>();
+            unselectedMods2.setPrefSize(200, 150);
 
             //An HBox made up of: Label, Button, Button
             HBox btnBox1 = new HBox();
@@ -83,18 +83,18 @@ public class SelectModulesRootPane extends HBox {
             resetBtn = new Button("Reset");
 
             this.getChildren().add(lbl1);
-            this.getChildren().add(unSelectedMods1);
+            this.getChildren().add(unselectedMods1);
             this.getChildren().add(btnBox1);
             this.getChildren().add(lbl2);
-            this.getChildren().add(unSelectedMods2);
+            this.getChildren().add(unselectedMods2);
             this.getChildren().add(btnBox2);
             this.getChildren().add(credBox);
             this.getChildren().add(resetBtn);
         }
     }
 
-    private class RightPaneHalf extends VBox{
-        private RightPaneHalf(){
+    private class RightPaneHalf extends VBox {
+        private RightPaneHalf() {
             this.setPadding(new Insets(10));
             this.setAlignment(Pos.CENTER);
 
@@ -104,7 +104,7 @@ public class SelectModulesRootPane extends HBox {
 
             //Selected Modules for the whole year
             selectedYLongMods = new ListView<>();
-            selectedYLongMods.setPrefSize(150,50);
+            selectedYLongMods.setPrefSize(150, 50);
             this.getChildren().add(selectedYLongMods);
 
             //"Select term 1 modules" label
@@ -112,7 +112,7 @@ public class SelectModulesRootPane extends HBox {
             this.getChildren().add(lbl2);
 
             selectedMods1 = new ListView<>();
-            selectedMods1.setPrefSize(150,150);
+            selectedMods1.setPrefSize(150, 150);
             this.getChildren().add(selectedMods1);
 
             //"Select term 1 modules" label
@@ -120,7 +120,7 @@ public class SelectModulesRootPane extends HBox {
             this.getChildren().add(lbl3);
 
             selectedMods2 = new ListView<>();
-            selectedMods2.setPrefSize(150,150);
+            selectedMods2.setPrefSize(150, 150);
             this.getChildren().add(selectedMods2);
 
             HBox credBox = new HBox();
@@ -140,132 +140,144 @@ public class SelectModulesRootPane extends HBox {
         }
     }
 
-    public void InitPopulateListViews(Course course){
-        AddUSelectMods1(course);
-        AddUSelectMods2(course);
+    public void InitPopulateListViews(Course course) {
+        AddUnselectMods1(course);
+        AddUnselectMods2(course);
         AddSelectYLMods(course);
         AddSelectedMods1(course);
         AddSelectedMods2(course);
+        credTxtField1.setText(credits1 + "");
+        credTxtField2.setText(credits2 + "");
     }
 
-    private void AddUSelectMods1(Course course){
-        for (Module mod: course.getAllModulesOnCourse()) {
-            if(course.getCourseName().equals("Software Engineering")
-            && !mod.isMandatory()) {
-                if(mod.getDelivery().equals(Schedule.TERM_1)) {
-                    unSelectedMods1.getItems().add(mod);
-                }
-            }else if(course.getCourseName().equals("Computer Science")
-            && !mod.isMandatory()){
-                if(mod.getDelivery().equals(Schedule.TERM_1)){
-                    unSelectedMods1.getItems().add(mod);
-                }
-            }
-        }
-    }
-
-    private void AddUSelectMods2(Course course){
-        for (Module mod: course.getAllModulesOnCourse()) {
-            if(course.getCourseName().equals("Software Engineering")
-            && !mod.isMandatory()) {
-                if(mod.getDelivery().equals(Schedule.TERM_2)) {
-                    unSelectedMods2.getItems().add(mod);
-                }
-            }else if(course.getCourseName().equals("Computer Science")
+    private void AddUnselectMods1(Course course) {
+        for (Module mod : course.getAllModulesOnCourse()) {
+            if (course.getCourseName().equals("Software Engineering")
                     && !mod.isMandatory()) {
-                if(mod.getDelivery().equals(Schedule.TERM_2)) {
-                    unSelectedMods2.getItems().add(mod);
+                if (mod.getDelivery().equals(Schedule.TERM_1)) {
+                    unselectedMods1.getItems().add(mod);
+                }
+            } else if (course.getCourseName().equals("Computer Science")
+                    && !mod.isMandatory()) {
+                if (mod.getDelivery().equals(Schedule.TERM_1)) {
+                    unselectedMods1.getItems().add(mod);
                 }
             }
         }
     }
 
-    private void AddSelectYLMods(Course course){
-        for (Module mod: course.getAllModulesOnCourse()) {
-            if(course.getCourseName().equals("Software Engineering")) {
+    private void AddUnselectMods2(Course course) {
+        for (Module mod : course.getAllModulesOnCourse()) {
+            if (course.getCourseName().equals("Software Engineering")
+                    && !mod.isMandatory()) {
+                if (mod.getDelivery().equals(Schedule.TERM_2)) {
+                    unselectedMods2.getItems().add(mod);
+                }
+            } else if (course.getCourseName().equals("Computer Science")
+                    && !mod.isMandatory()) {
+                if (mod.getDelivery().equals(Schedule.TERM_2)) {
+                    unselectedMods2.getItems().add(mod);
+                }
+            }
+        }
+    }
+
+    private void AddSelectYLMods(Course course) {
+        for (Module mod : course.getAllModulesOnCourse()) {
+            if (course.getCourseName().equals("Software Engineering")) {
                 if (mod.getDelivery().equals(Schedule.YEAR_LONG)) {
                     selectedYLongMods.getItems().add(mod);
                 }
-            }else if(course.getCourseName().equals("Computer Science")){
-                if(mod.getDelivery().equals(Schedule.YEAR_LONG)){
+            } else if (course.getCourseName().equals("Computer Science")) {
+                if (mod.getDelivery().equals(Schedule.YEAR_LONG)) {
                     selectedYLongMods.getItems().add(mod);
                 }
             }
         }
     }
 
-    private void AddSelectedMods1(Course course){
-        for (Module mod: course.getAllModulesOnCourse()) {
-            if(course.getCourseName().equals("Software Engineering")){
-                if(mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_1)){
+    private void AddSelectedMods1(Course course) {
+        for (Module mod : course.getAllModulesOnCourse()) {
+            if (course.getCourseName().equals("Software Engineering")) {
+                if (mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_1)) {
                     selectedMods1.getItems().add(mod);
                 }
             }
-            if(course.getCourseName().equals("Computer Science")){
-                if(mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_1)){
+
+            if (course.getCourseName().equals("Computer Science")) {
+                if (mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_1)) {
                     selectedMods1.getItems().add(mod);
                 }
             }
         }
     }
 
-    private void AddSelectedMods2(Course course){
-        for (Module mod: course.getAllModulesOnCourse()) {
-            if(course.getCourseName().equals("Software Engineering")){
-                if(mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_2)){
+    private void AddSelectedMods2(Course course) {
+        for (Module mod : course.getAllModulesOnCourse()) {
+            if (course.getCourseName().equals("Software Engineering")) {
+                if (mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_2)) {
                     selectedMods2.getItems().add(mod);
                 }
             }
-            if(course.getCourseName().equals("Computer Science")){
-                if(mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_2)){
+
+            if (course.getCourseName().equals("Computer Science")) {
+                if (mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_2)) {
                     selectedMods2.getItems().add(mod);
                 }
             }
         }
     }
 
-    public ListView<Module> getUnSelectedMods1(){
-        return unSelectedMods1;
+    public ListView<Module> getUnselectedMods1() {
+        return unselectedMods1;
     }
-    public ListView<Module> getUnSelectedMods2(){
-        return unSelectedMods2;
+
+    public ListView<Module> getUnSelectedMods2() {
+        return unselectedMods2;
     }
-    public ListView<Module> getSelectedYLongMods(){
+
+    public ListView<Module> getSelectedYLongMods() {
         return selectedYLongMods;
     }
-    public ListView<Module> getSelectedMods1(){
+
+    public ListView<Module> getSelectedMods1() {
         return selectedMods1;
     }
-    public ListView<Module> getSelectedMods2(){
+
+    public ListView<Module> getSelectedMods2() {
         return selectedMods2;
     }
 
-    public void setCreated(boolean created){
+    public void setCreated(boolean created) {
         this.created = created;
     }
 
-    public boolean getCreated(){
+    public boolean getCreated() {
         return created;
     }
 
     //Methods for external use of the handlers in the controller
-    public void addAddBtnHandler1(EventHandler<ActionEvent> handler){
+    public void addAddBtnHandler1(EventHandler<ActionEvent> handler) {
         addBtn1.setOnAction(handler);
     }
-    public void addRmBtnHandler1(EventHandler<ActionEvent> handler){
+
+    public void addRmBtnHandler1(EventHandler<ActionEvent> handler) {
         rmBtn1.setOnAction(handler);
     }
-    public void addSubmitBtnHandler(EventHandler<ActionEvent> handler){
+
+    public void addSubmitBtnHandler(EventHandler<ActionEvent> handler) {
         submitBtn.setOnAction(handler);
     }
-    public void addAddBtnHandler2(EventHandler<ActionEvent> handler){
+
+    public void addAddBtnHandler2(EventHandler<ActionEvent> handler) {
         addBtn2.setOnAction(handler);
     }
-    public void addRmBtnHandler2(EventHandler<ActionEvent> handler){
+
+    public void addRmBtnHandler2(EventHandler<ActionEvent> handler) {
         rmBtn2.setOnAction(handler);
     }
-    public void addResetBtnHandler(EventHandler<ActionEvent> handler){
+
+    public void addResetBtnHandler(EventHandler<ActionEvent> handler) {
         resetBtn.setOnAction(handler);
     }
-
 }
