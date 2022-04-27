@@ -18,7 +18,7 @@ public class ModuleChooserController {
 
     private CreateStudentProfilePane cspp;
     private ModuleChooserMenuBar mcmb;
-    private int creditsSum;
+    private int credits;
 
     public ModuleChooserController(ModuleChooserRootPane view, StudentProfile model) {
         //initialise view and model fields
@@ -54,6 +54,9 @@ public class ModuleChooserController {
         //attach event handler to rmBtn2
         view.getSelectModulesPane().addRmBtnHandler2(new RemoveModsHandler2());
 
+        //attach event handler to submitBtn
+        view.getSelectModulesPane().addResetBtnHandler(new ResetHandler());
+
         //An information alert whenever one clicks the "about" menuitem in the about menu.
         mcmb.addAboutHandler(new CreateAboutAlert());
 
@@ -61,7 +64,7 @@ public class ModuleChooserController {
         mcmb.addExitHandler(e -> System.exit(0));
     }
 
-    //event handler (currently empty), which can be used for creating a profile
+    //event handler used for creating a profile
     private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
             model.setStudentCourse(view.getCreateStudentProfilePane().getSelectedCourse());
@@ -73,7 +76,7 @@ public class ModuleChooserController {
             System.out.println(model);
 
             if (!view.getSelectModulesPane().getCreated()) {
-                view.getSelectModulesPane().PopulateListViews(model.getStudentCourse());
+                view.getSelectModulesPane().InitPopulateListViews(model.getStudentCourse());
                 view.getSelectModulesPane().setCreated(true);
             }
         }
@@ -85,7 +88,7 @@ public class ModuleChooserController {
             Module selectedMod =
                     view.getSelectModulesPane().getUnSelectedMods1().getSelectionModel().getSelectedItem();
 
-            if(view.getSelectModulesPane().getUnSelectedMods1().getItems().contains(selectedMod)) {
+            if (view.getSelectModulesPane().getUnSelectedMods1().getItems().contains(selectedMod)) {
                 if (!view.getSelectModulesPane().getSelectedMods1().getItems().contains(selectedMod)) {
                     view.getSelectModulesPane().getSelectedMods1().getItems().add(selectedMod);
                     view.getSelectModulesPane().getUnSelectedMods1().getItems().remove(selectedMod);
@@ -94,18 +97,17 @@ public class ModuleChooserController {
         }
     }
 
-    private class AddModsHandler2 implements EventHandler<ActionEvent>{
-        public void handle(ActionEvent e){
+    private class AddModsHandler2 implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent e) {
             Module selectedMod =
                     view.getSelectModulesPane().getUnSelectedMods2().getSelectionModel().getSelectedItem();
 
-            if(view.getSelectModulesPane().getUnSelectedMods2().getItems().contains(selectedMod)) {
+            if (view.getSelectModulesPane().getUnSelectedMods2().getItems().contains(selectedMod)) {
                 if (!view.getSelectModulesPane().getSelectedMods2().getItems().contains(selectedMod)) {
                     view.getSelectModulesPane().getSelectedMods2().getItems().add(selectedMod);
                     view.getSelectModulesPane().getUnSelectedMods2().getItems().remove(selectedMod);
                 }
             }
-
         }
     }
 
@@ -115,30 +117,40 @@ public class ModuleChooserController {
             Module selectedMod =
                     view.getSelectModulesPane().getSelectedMods1().getSelectionModel().getSelectedItem();
 
-            if(view.getSelectModulesPane().getSelectedMods1().getItems().contains(selectedMod)){
+            if (view.getSelectModulesPane().getSelectedMods1().getItems().contains(selectedMod)) {
                 view.getSelectModulesPane().getSelectedMods1().getItems().remove(selectedMod);
                 view.getSelectModulesPane().getUnSelectedMods1().getItems().add(selectedMod);
             }
         }
     }
 
-    private class RemoveModsHandler2 implements EventHandler<ActionEvent>{
-        public void handle(ActionEvent e){
+    private class RemoveModsHandler2 implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent e) {
             Module selectedMod =
                     view.getSelectModulesPane().getSelectedMods2().getSelectionModel().getSelectedItem();
 
-            if(view.getSelectModulesPane().getSelectedMods2().getItems().contains(selectedMod)){
+            if (view.getSelectModulesPane().getSelectedMods2().getItems().contains(selectedMod)) {
                 view.getSelectModulesPane().getSelectedMods2().getItems().remove(selectedMod);
                 view.getSelectModulesPane().getUnSelectedMods2().getItems().add(selectedMod);
             }
-
         }
     }
 
     //Reset Handler..
     private class ResetHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
+            model.clearReservedModules();
+            model.clearSelectedModules();
+            clearListViews();
+            view.getSelectModulesPane().InitPopulateListViews(model.getStudentCourse());
+        }
 
+        private void clearListViews() {
+            view.getSelectModulesPane().getUnSelectedMods1().getItems().clear();
+            view.getSelectModulesPane().getSelectedMods1().getItems().clear();
+            view.getSelectModulesPane().getUnSelectedMods2().getItems().clear();
+            view.getSelectModulesPane().getSelectedMods2().getItems().clear();
+            view.getSelectModulesPane().getSelectedYLongMods().getItems().clear();
         }
     }
 

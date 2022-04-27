@@ -140,7 +140,7 @@ public class SelectModulesRootPane extends HBox {
         }
     }
 
-    public void PopulateListViews(Course course){
+    public void InitPopulateListViews(Course course){
         AddUSelectMods1(course);
         AddUSelectMods2(course);
         AddSelectYLMods(course);
