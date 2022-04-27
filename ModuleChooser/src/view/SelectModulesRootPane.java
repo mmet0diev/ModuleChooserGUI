@@ -140,7 +140,7 @@ public class SelectModulesRootPane extends HBox {
         }
     }
 
-    public void InitPopulateListViews(Course course) {
+    public void initSelectModulesPane(Course course) {
         AddUnselectMods1(course);
         AddUnselectMods2(course);
         AddSelectYLMods(course);
@@ -187,10 +187,14 @@ public class SelectModulesRootPane extends HBox {
             if (course.getCourseName().equals("Software Engineering")) {
                 if (mod.getDelivery().equals(Schedule.YEAR_LONG)) {
                     selectedYLongMods.getItems().add(mod);
+                    credits1 += 15;
+                    credits2 += 15;
                 }
             } else if (course.getCourseName().equals("Computer Science")) {
                 if (mod.getDelivery().equals(Schedule.YEAR_LONG)) {
                     selectedYLongMods.getItems().add(mod);
+                    credits1 += 15;
+                    credits2 += 15;
                 }
             }
         }
@@ -201,12 +205,14 @@ public class SelectModulesRootPane extends HBox {
             if (course.getCourseName().equals("Software Engineering")) {
                 if (mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_1)) {
                     selectedMods1.getItems().add(mod);
+                    credits1 += 15;
                 }
             }
 
             if (course.getCourseName().equals("Computer Science")) {
                 if (mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_1)) {
                     selectedMods1.getItems().add(mod);
+                    credits1 += 15;
                 }
             }
         }
@@ -217,12 +223,14 @@ public class SelectModulesRootPane extends HBox {
             if (course.getCourseName().equals("Software Engineering")) {
                 if (mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_2)) {
                     selectedMods2.getItems().add(mod);
+                    credits2 += 15;
                 }
             }
 
             if (course.getCourseName().equals("Computer Science")) {
                 if (mod.isMandatory() && mod.getDelivery().equals(Schedule.TERM_2)) {
                     selectedMods2.getItems().add(mod);
+                    credits2 += 15;
                 }
             }
         }
@@ -254,6 +262,43 @@ public class SelectModulesRootPane extends HBox {
 
     public boolean getCreated() {
         return created;
+    }
+
+    public void incrementCredits1() {
+        credits1 += 15;
+    }
+
+    public void incrementCredits2() {
+        credits2 += 15;
+    }
+
+    public void decrementCredits1() {
+        credits1 -= 15;
+    }
+
+    public void decrementCredits2() {
+        credits2 -= 15;
+    }
+
+    public void clearCredits() {
+        credits1 = 0;
+        credits2 = 0;
+    }
+
+    public void updateCredTxt1() {
+        credTxtField1.setText(credits1 + "");
+    }
+
+    public void updateCredTxt2() {
+        credTxtField2.setText(credits2 + "");
+    }
+
+    public int getCredits1() {
+        return credits1;
+    }
+
+    public int getCredits2() {
+        return credits2;
     }
 
     //Methods for external use of the handlers in the controller

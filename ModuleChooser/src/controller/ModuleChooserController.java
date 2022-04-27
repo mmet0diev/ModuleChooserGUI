@@ -74,8 +74,9 @@ public class ModuleChooserController {
             model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
 
             if (!view.getSelectModulesPane().getCreated()) {
-                view.getSelectModulesPane().InitPopulateListViews(model.getStudentCourse());
+                view.getSelectModulesPane().initSelectModulesPane(model.getStudentCourse());
                 view.getSelectModulesPane().setCreated(true);
+                totalCredits = view.getSelectModulesPane().getCredits1() + view.getSelectModulesPane().getCredits2();
             }
         }
     }
@@ -88,8 +89,12 @@ public class ModuleChooserController {
 
             if (view.getSelectModulesPane().getUnselectedMods1().getItems().contains(selectedMod)) {
                 if (!view.getSelectModulesPane().getSelectedMods1().getItems().contains(selectedMod)) {
-                    view.getSelectModulesPane().getSelectedMods1().getItems().add(selectedMod);
-                    view.getSelectModulesPane().getUnselectedMods1().getItems().remove(selectedMod);
+                    if(view.getSelectModulesPane().getCredits1() <= 45) {
+                        view.getSelectModulesPane().getSelectedMods1().getItems().add(selectedMod);
+                        view.getSelectModulesPane().getUnselectedMods1().getItems().remove(selectedMod);
+                        view.getSelectModulesPane().incrementCredits1();
+                        view.getSelectModulesPane().updateCredTxt1();
+                    }
                 }
             }
         }
@@ -102,8 +107,12 @@ public class ModuleChooserController {
 
             if (view.getSelectModulesPane().getUnSelectedMods2().getItems().contains(selectedMod)) {
                 if (!view.getSelectModulesPane().getSelectedMods2().getItems().contains(selectedMod)) {
-                    view.getSelectModulesPane().getSelectedMods2().getItems().add(selectedMod);
-                    view.getSelectModulesPane().getUnSelectedMods2().getItems().remove(selectedMod);
+                    if(view.getSelectModulesPane().getCredits2() <= 45) {
+                        view.getSelectModulesPane().getSelectedMods2().getItems().add(selectedMod);
+                        view.getSelectModulesPane().getUnSelectedMods2().getItems().remove(selectedMod);
+                        view.getSelectModulesPane().incrementCredits2();
+                        view.getSelectModulesPane().updateCredTxt2();
+                    }
                 }
             }
         }
@@ -116,9 +125,13 @@ public class ModuleChooserController {
                     view.getSelectModulesPane().getSelectedMods1().getSelectionModel().getSelectedItem();
 
             if (view.getSelectModulesPane().getSelectedMods1().getItems().contains(selectedMod)) {
-                if(!selectedMod.isMandatory()) {
-                    view.getSelectModulesPane().getSelectedMods1().getItems().remove(selectedMod);
-                    view.getSelectModulesPane().getUnselectedMods1().getItems().add(selectedMod);
+                if (!selectedMod.isMandatory()) {
+                    if(view.getSelectModulesPane().getCredits1() >= 0) {
+                        view.getSelectModulesPane().getSelectedMods1().getItems().remove(selectedMod);
+                        view.getSelectModulesPane().getUnselectedMods1().getItems().add(selectedMod);
+                        view.getSelectModulesPane().decrementCredits1();
+                        view.getSelectModulesPane().updateCredTxt1();
+                    }
                 }
             }
         }
@@ -131,8 +144,12 @@ public class ModuleChooserController {
 
             if (view.getSelectModulesPane().getSelectedMods2().getItems().contains(selectedMod)) {
                 if (!selectedMod.isMandatory()) {
-                    view.getSelectModulesPane().getSelectedMods2().getItems().remove(selectedMod);
-                    view.getSelectModulesPane().getUnSelectedMods2().getItems().add(selectedMod);
+                    if(view.getSelectModulesPane().getCredits2() >= 0) {
+                        view.getSelectModulesPane().getSelectedMods2().getItems().remove(selectedMod);
+                        view.getSelectModulesPane().getUnSelectedMods2().getItems().add(selectedMod);
+                        view.getSelectModulesPane().decrementCredits2();
+                        view.getSelectModulesPane().updateCredTxt2();
+                    }
                 }
             }
         }
@@ -141,10 +158,11 @@ public class ModuleChooserController {
     //Reset Handler..
     private class ResetHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
+            view.getSelectModulesPane().clearCredits();
             model.clearReservedModules();
             model.clearSelectedModules();
             clearListViews();
-            view.getSelectModulesPane().InitPopulateListViews(model.getStudentCourse());
+            view.getSelectModulesPane().initSelectModulesPane(model.getStudentCourse());
         }
 
         private void clearListViews() {
