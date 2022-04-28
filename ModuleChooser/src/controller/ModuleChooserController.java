@@ -87,7 +87,7 @@ public class ModuleChooserController {
                 model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
                 model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
             } else {
-                System.out.println("Some or none fields are empty!\n Enter appropriate data.");
+                System.out.println("Some or all fields empty!\n Enter appropriate data.");
             }
 
 
