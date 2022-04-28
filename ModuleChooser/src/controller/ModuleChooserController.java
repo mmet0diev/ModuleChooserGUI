@@ -234,6 +234,12 @@ public class ModuleChooserController {
         }
     }
 
+    private class AddReserveModsHandler implements EventHandler<ActionEvent>{
+        public void handle(ActionEvent e){
+            
+        }
+    }
+
     private class CreateAboutAlertHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

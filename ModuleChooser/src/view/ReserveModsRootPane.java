@@ -5,6 +5,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.Module;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 public class ReserveModsRootPane extends Accordion {
     private ListView<Module> unselectedModsList1, unselectedModsList2, reservedModsList1, reservedModsList2;
@@ -39,7 +41,7 @@ public class ReserveModsRootPane extends Accordion {
             unselectedModsList1.setPrefSize(400, 250);
 
             //Label 2
-            Label lb2 = new Label("Reserve 30 credits worth of modules");
+            Label lb2 = new Label("Reserve 30 credits worth of modules (each worth 15)");
 
             Label lb3 = new Label("Reserved Term 1 modules\n");
 
@@ -82,7 +84,7 @@ public class ReserveModsRootPane extends Accordion {
             unselectedModsList2.setPrefSize(400, 250);
 
             //Label 2
-            Label lb2 = new Label("Reserve 30 credits worth of modules");
+            Label lb2 = new Label("Reserve 30 credits worth of modules (each worth 15)");
 
             Label lb3 = new Label("Reserved Term 2 modules\n");
 
@@ -122,5 +124,27 @@ public class ReserveModsRootPane extends Accordion {
 
     public ListView<Module> getReservedModsList2(){
         return reservedModsList2;
+    }
+
+    public Button getAddBtn1(){
+        return addBtn1;
+    }
+    public void addAddBtn1Handler(EventHandler<ActionEvent> handler){
+        addBtn1.setOnAction(handler);
+    }
+    public void addAddBtn2Handler(EventHandler<ActionEvent> handler){
+        addBtn2.setOnAction(handler);
+    }
+    public void addRmBtn1Handler(EventHandler<ActionEvent> handler){
+        rmBtn1.setOnAction(handler);
+    }
+    public void addRmBtn2Handler(EventHandler<ActionEvent> handler){
+        rmBtn2.setOnAction(handler);
+    }
+    public void addConfirmBtnHandler1(EventHandler<ActionEvent> handler){
+        confirmBtn1.setOnAction(handler);
+    }
+    public void addConfirmBtnHandler2(EventHandler<ActionEvent> handler){
+        confirmBtn2.setOnAction(handler);
     }
 }

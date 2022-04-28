@@ -18,7 +18,7 @@ import java.util.Set;
 
 
 public class SelectModulesRootPane extends HBox {
-    //Note, the numbers 1 and 2 after each var name mostly stand for either "Term 1" or "Term 2"
+    //Note, the numbers 1 and 2 after most var names (mostly) stand for either "Term 1" or "Term 2"
     private ListView<Module> unselectedMods1, unselectedMods2, selectedYLongMods, selectedMods1, selectedMods2;
     private Button addBtn1, rmBtn1, submitBtn, addBtn2, rmBtn2, resetBtn;
     private TextField credTxtField1, credTxtField2;
