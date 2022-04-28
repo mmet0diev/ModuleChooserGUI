@@ -7,6 +7,11 @@ import javafx.scene.layout.VBox;
 import model.Module;
 
 public class ReserveModsRootPane extends Accordion {
+    private ListView<Module> unselectedModsList1;
+    private ListView<Module> unselectedModsList2;
+    private ListView<Module> reservedModsList1;
+    private ListView<Module> reservedModsList2;
+
     public ReserveModsRootPane() {
         this.setPadding(new Insets(8));
         //Instantiate Panes
@@ -26,22 +31,22 @@ public class ReserveModsRootPane extends Accordion {
             this.setSpacing(8);
 
             //Instantiate 2 VBoxes, left VBox and right VBox
-            VBox unSelectModsBox = new VBox();
+            VBox unselectModsBox = new VBox();
             VBox reserveModsBox = new VBox();
             //Label 1
             Label lb1 = new Label("Unselected Term 1 modules\n");
 
             //List view for not selected modules term 1
-            ListView<Module> notSelectedModsList = new ListView<>();
-            notSelectedModsList.setPrefSize(400, 250);
+            unselectedModsList1 = new ListView<>();
+            unselectedModsList1.setPrefSize(400, 250);
 
             //Label 2
             Label lb2 = new Label("Reserve 30 credits worth of modules");
 
             Label lb3 = new Label("Reserved Term 1 modules\n");
 
-            ListView<Module> reservedModsList = new ListView<>();
-            reservedModsList.setPrefSize(400, 250);
+            reservedModsList1 = new ListView<>();
+            reservedModsList1.setPrefSize(400, 250);
 
             ButtonBar btns = new ButtonBar();
             Button btn1 = new Button("Add");
@@ -51,15 +56,15 @@ public class ReserveModsRootPane extends Accordion {
             btns.getButtons().addAll(btn1, btn2, btn3);
 
             //Set the spacing for the elements inside each VBox
-            unSelectModsBox.setSpacing(6);
+            unselectModsBox.setSpacing(6);
             reserveModsBox.setSpacing(6);
 
             //Add each sub node/element to the VBoxes
-            unSelectModsBox.getChildren().addAll(lb1, notSelectedModsList, lb2);
-            reserveModsBox.getChildren().addAll(lb3, reservedModsList, btns);
+            unselectModsBox.getChildren().addAll(lb1, unselectedModsList1, lb2);
+            reserveModsBox.getChildren().addAll(lb3, reservedModsList1, btns);
 
             //Add the VBoxes to the containing HBox
-            this.getChildren().addAll(unSelectModsBox, reserveModsBox);
+            this.getChildren().addAll(unselectModsBox, reserveModsBox);
         }
     }
 
@@ -69,22 +74,22 @@ public class ReserveModsRootPane extends Accordion {
             this.setSpacing(8);
 
             //Instantiate 2 VBoxes, left VBox and right VBox
-            VBox unSelectModsBox = new VBox();
+            VBox unselectModsBox = new VBox();
             VBox reserveModsBox = new VBox();
             //Label 1
             Label lb1 = new Label("Unselected Term 2 modules\n");
 
             //List view for not selected modules term 1
-            ListView<Module> notSelectedModsList = new ListView<>();
-            notSelectedModsList.setPrefSize(400, 250);
+            unselectedModsList2 = new ListView<>();
+            unselectedModsList2.setPrefSize(400, 250);
 
             //Label 2
             Label lb2 = new Label("Reserve 30 credits worth of modules");
 
             Label lb3 = new Label("Reserved Term 2 modules\n");
 
-            ListView<Module> reservedModsList = new ListView<>();
-            reservedModsList.setPrefSize(400, 250);
+            reservedModsList2 = new ListView<>();
+            reservedModsList2.setPrefSize(400, 250);
 
             ButtonBar btns = new ButtonBar();
             Button btn1 = new Button("Add");
@@ -94,15 +99,30 @@ public class ReserveModsRootPane extends Accordion {
             btns.getButtons().addAll(btn1, btn2, btn3);
 
             //Set the spacing for the elements inside each VBox
-            unSelectModsBox.setSpacing(6);
+            unselectModsBox.setSpacing(6);
             reserveModsBox.setSpacing(6);
 
             //Add each sub node/element to the VBoxes
-            unSelectModsBox.getChildren().addAll(lb1, notSelectedModsList, lb2);
-            reserveModsBox.getChildren().addAll(lb3, reservedModsList, btns);
+            unselectModsBox.getChildren().addAll(lb1, unselectedModsList2, lb2);
+            reserveModsBox.getChildren().addAll(lb3, reservedModsList2, btns);
 
             //Add the VBoxes to the containing HBox
-            this.getChildren().addAll(unSelectModsBox, reserveModsBox);
+            this.getChildren().addAll(unselectModsBox, reserveModsBox);
         }
+    }
+    public ListView<Module> getUnselectedModsList1(){
+        return unselectedModsList1;
+    }
+
+    public ListView<Module> getUnselectedModsList2(){
+        return unselectedModsList2;
+    }
+
+    public ListView<Module> getReservedModsList1(){
+        return reservedModsList1;
+    }
+
+    public ListView<Module> getReservedModsList2(){
+        return reservedModsList2;
     }
 }

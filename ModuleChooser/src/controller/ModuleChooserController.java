@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -8,6 +9,10 @@ import model.Module;
 import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
 public class ModuleChooserController {
@@ -54,11 +59,14 @@ public class ModuleChooserController {
         //attach event handler to rmBtn2
         view.getSelectModulesPane().addRmBtnHandler2(new RemoveModsHandler2());
 
-        //attach event handler to submitBtn
+        //attach event handler to resetBtn
         view.getSelectModulesPane().addResetBtnHandler(new ResetHandler());
 
+        //attach event handler to submitBtn
+        view.getSelectModulesPane().addSubmitBtnHandler(new SubmitHandler());
+
         //An information alert whenever one clicks the "about" menuitem in the about menu.
-        mcmb.addAboutHandler(new CreateAboutAlert());
+        mcmb.addAboutHandler(new CreateAboutAlertHandler());
 
         //attach an event handler to the menu bar that closes the application
         mcmb.addExitHandler(e -> System.exit(0));
@@ -76,7 +84,20 @@ public class ModuleChooserController {
             if (!view.getSelectModulesPane().getCreated()) {
                 view.getSelectModulesPane().initSelectModulesPane(model.getStudentCourse());
                 view.getSelectModulesPane().setCreated(true);
-                totalCredits = view.getSelectModulesPane().getCredits1() + view.getSelectModulesPane().getCredits2();
+            }
+            addCompulsoryToSelectedMods();
+        }
+        private void addCompulsoryToSelectedMods(){
+            Course selectedCourse = model.getStudentCourse();
+            if(selectedCourse.getCourseName().equals("Software Engineering")){
+            model.addSelectedModule(view.getSelectModulesPane().getSelectedYLongMods().getItems().get(0));
+            model.addSelectedModule(view.getSelectModulesPane().getSelectedMods1().getItems().get(0));
+            model.addSelectedModule(view.getSelectModulesPane().getSelectedMods2().getItems().get(0));
+            }
+
+            if(selectedCourse.getCourseName().equals("Computer Science")){
+                model.addSelectedModule(view.getSelectModulesPane().getSelectedYLongMods().getItems().get(0));
+                model.addSelectedModule(view.getSelectModulesPane().getSelectedMods1().getItems().get(0));
             }
         }
     }
@@ -89,11 +110,12 @@ public class ModuleChooserController {
 
             if (view.getSelectModulesPane().getUnselectedMods1().getItems().contains(selectedMod)) {
                 if (!view.getSelectModulesPane().getSelectedMods1().getItems().contains(selectedMod)) {
-                    if(view.getSelectModulesPane().getCredits1() <= 45) {
+                    if (view.getSelectModulesPane().getCredits1() <= 45) {
                         view.getSelectModulesPane().getSelectedMods1().getItems().add(selectedMod);
                         view.getSelectModulesPane().getUnselectedMods1().getItems().remove(selectedMod);
                         view.getSelectModulesPane().incrementCredits1();
                         view.getSelectModulesPane().updateCredTxt1();
+                        model.getAllSelectedModules().add(selectedMod);
                     }
                 }
             }
@@ -107,11 +129,12 @@ public class ModuleChooserController {
 
             if (view.getSelectModulesPane().getUnSelectedMods2().getItems().contains(selectedMod)) {
                 if (!view.getSelectModulesPane().getSelectedMods2().getItems().contains(selectedMod)) {
-                    if(view.getSelectModulesPane().getCredits2() <= 45) {
+                    if (view.getSelectModulesPane().getCredits2() <= 45) {
                         view.getSelectModulesPane().getSelectedMods2().getItems().add(selectedMod);
                         view.getSelectModulesPane().getUnSelectedMods2().getItems().remove(selectedMod);
                         view.getSelectModulesPane().incrementCredits2();
                         view.getSelectModulesPane().updateCredTxt2();
+                        model.getAllSelectedModules().add(selectedMod);
                     }
                 }
             }
@@ -126,7 +149,7 @@ public class ModuleChooserController {
 
             if (view.getSelectModulesPane().getSelectedMods1().getItems().contains(selectedMod)) {
                 if (!selectedMod.isMandatory()) {
-                    if(view.getSelectModulesPane().getCredits1() >= 0) {
+                    if (view.getSelectModulesPane().getCredits1() >= 0) {
                         view.getSelectModulesPane().getSelectedMods1().getItems().remove(selectedMod);
                         view.getSelectModulesPane().getUnselectedMods1().getItems().add(selectedMod);
                         view.getSelectModulesPane().decrementCredits1();
@@ -144,7 +167,7 @@ public class ModuleChooserController {
 
             if (view.getSelectModulesPane().getSelectedMods2().getItems().contains(selectedMod)) {
                 if (!selectedMod.isMandatory()) {
-                    if(view.getSelectModulesPane().getCredits2() >= 0) {
+                    if (view.getSelectModulesPane().getCredits2() >= 0) {
                         view.getSelectModulesPane().getSelectedMods2().getItems().remove(selectedMod);
                         view.getSelectModulesPane().getUnSelectedMods2().getItems().add(selectedMod);
                         view.getSelectModulesPane().decrementCredits2();
@@ -159,6 +182,7 @@ public class ModuleChooserController {
     private class ResetHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
             view.getSelectModulesPane().clearCredits();
+            totalCredits = 0;
             model.clearReservedModules();
             model.clearSelectedModules();
             clearListViews();
@@ -176,12 +200,25 @@ public class ModuleChooserController {
 
     //Submit Handler..
     private class SubmitHandler implements EventHandler<ActionEvent> {
+        Set<Module> selectedMods = model.getAllSelectedModules();
         public void handle(ActionEvent e) {
+            totalCredits = view.getSelectModulesPane().getCredits1()
+            + view.getSelectModulesPane().getCredits2();
 
+            if(totalCredits == 120) {
+                for (Module mod :
+                        selectedMods) {
+                    System.out.print("[" + mod.getModuleName() + "], ");
+                }
+                System.out.println();
+            }else{
+                System.out.println("Not enough modules worth of credits selected.\n" +
+                        "Please select 120 credits worth of modules.");
+            }
         }
     }
 
-    private class CreateAboutAlert implements EventHandler<ActionEvent> {
+    private class CreateAboutAlertHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information Dialog");

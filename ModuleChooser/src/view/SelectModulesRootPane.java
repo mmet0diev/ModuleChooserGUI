@@ -13,6 +13,9 @@ import model.Course;
 import model.Module;
 import model.Schedule;
 
+import java.util.List;
+import java.util.Set;
+
 
 public class SelectModulesRootPane extends HBox {
     //Note, the numbers 1 and 2 after each var name mostly stand for either "Term 1" or "Term 2"
