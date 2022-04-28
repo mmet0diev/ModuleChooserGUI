@@ -7,10 +7,8 @@ import javafx.scene.layout.VBox;
 import model.Module;
 
 public class ReserveModsRootPane extends Accordion {
-    private ListView<Module> unselectedModsList1;
-    private ListView<Module> unselectedModsList2;
-    private ListView<Module> reservedModsList1;
-    private ListView<Module> reservedModsList2;
+    private ListView<Module> unselectedModsList1, unselectedModsList2, reservedModsList1, reservedModsList2;
+    private Button addBtn1, rmBtn1, confirmBtn1, addBtn2, rmBtn2, confirmBtn2;
 
     public ReserveModsRootPane() {
         this.setPadding(new Insets(8));
@@ -49,11 +47,11 @@ public class ReserveModsRootPane extends Accordion {
             reservedModsList1.setPrefSize(400, 250);
 
             ButtonBar btns = new ButtonBar();
-            Button btn1 = new Button("Add");
-            Button btn2 = new Button("Remove");
-            Button btn3 = new Button("Confirm");
+            addBtn1 = new Button("Add");
+            rmBtn1 = new Button("Remove");
+            confirmBtn1 = new Button("Confirm");
 
-            btns.getButtons().addAll(btn1, btn2, btn3);
+            btns.getButtons().addAll(addBtn1, rmBtn1, confirmBtn1);
 
             //Set the spacing for the elements inside each VBox
             unselectModsBox.setSpacing(6);
@@ -92,11 +90,11 @@ public class ReserveModsRootPane extends Accordion {
             reservedModsList2.setPrefSize(400, 250);
 
             ButtonBar btns = new ButtonBar();
-            Button btn1 = new Button("Add");
-            Button btn2 = new Button("Remove");
-            Button btn3 = new Button("Confirm");
+            addBtn2 = new Button("Add");
+            rmBtn2 = new Button("Remove");
+            confirmBtn2 = new Button("Confirm");
 
-            btns.getButtons().addAll(btn1, btn2, btn3);
+            btns.getButtons().addAll(addBtn2, rmBtn2, confirmBtn2);
 
             //Set the spacing for the elements inside each VBox
             unselectModsBox.setSpacing(6);

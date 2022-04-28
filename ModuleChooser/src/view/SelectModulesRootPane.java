@@ -243,7 +243,7 @@ public class SelectModulesRootPane extends HBox {
         return unselectedMods1;
     }
 
-    public ListView<Module> getUnSelectedMods2() {
+    public ListView<Module> getUnselectedMods2() {
         return unselectedMods2;
     }
 

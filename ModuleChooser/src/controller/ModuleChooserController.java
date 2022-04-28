@@ -75,21 +75,16 @@ public class ModuleChooserController {
     //event handler used for creating a profile
     private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
-            boolean pnumFieldIsEmpty = view.getCreateStudentProfilePane().getStudentPnumber().isEmpty();
-            boolean firstNameFieldIsEmpty = view.getCreateStudentProfilePane().getStudentName().getFirstName().isEmpty();
-            boolean familyNameFieldIsEmpty = view.getCreateStudentProfilePane().getStudentName().getFamilyName().isEmpty();
-            boolean emailFieldIsEmpty = view.getCreateStudentProfilePane().getStudentEmail().isEmpty();
+//            boolean pnumFieldIsEmpty = view.getCreateStudentProfilePane().getStudentPnumber().isEmpty();
+//            boolean firstNameFieldIsEmpty = view.getCreateStudentProfilePane().getStudentName().getFirstName().isEmpty();
+//            boolean familyNameFieldIsEmpty = view.getCreateStudentProfilePane().getStudentName().getFamilyName().isEmpty();
+//            boolean emailFieldIsEmpty = view.getCreateStudentProfilePane().getStudentEmail().isEmpty();
 
             model.setStudentCourse(view.getCreateStudentProfilePane().getSelectedCourse());
-            if (!pnumFieldIsEmpty && !firstNameFieldIsEmpty && !familyNameFieldIsEmpty && !emailFieldIsEmpty) {
-                model.setStudentPnumber(view.getCreateStudentProfilePane().getStudentPnumber());
-                model.setStudentName(view.getCreateStudentProfilePane().getStudentName());
-                model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
-                model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
-            } else {
-                System.out.println("Some or all fields empty!\n Enter appropriate data.");
-            }
-
+            model.setStudentPnumber(view.getCreateStudentProfilePane().getStudentPnumber());
+            model.setStudentName(view.getCreateStudentProfilePane().getStudentName());
+            model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
+            model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
 
             if (!view.getSelectModulesPane().getCreated()) {
                 view.getSelectModulesPane().initSelectModulesPane(model.getStudentCourse());
@@ -136,13 +131,13 @@ public class ModuleChooserController {
     private class AddModsHandler2 implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
             Module selectedMod =
-                    view.getSelectModulesPane().getUnSelectedMods2().getSelectionModel().getSelectedItem();
+                    view.getSelectModulesPane().getUnselectedMods2().getSelectionModel().getSelectedItem();
 
-            if (view.getSelectModulesPane().getUnSelectedMods2().getItems().contains(selectedMod)) {
+            if (view.getSelectModulesPane().getUnselectedMods2().getItems().contains(selectedMod)) {
                 if (!view.getSelectModulesPane().getSelectedMods2().getItems().contains(selectedMod)) {
                     if (view.getSelectModulesPane().getCredits2() <= 45) {
                         view.getSelectModulesPane().getSelectedMods2().getItems().add(selectedMod);
-                        view.getSelectModulesPane().getUnSelectedMods2().getItems().remove(selectedMod);
+                        view.getSelectModulesPane().getUnselectedMods2().getItems().remove(selectedMod);
                         view.getSelectModulesPane().incrementCredits2();
                         view.getSelectModulesPane().updateCredTxt2();
                         model.getAllSelectedModules().add(selectedMod);
@@ -180,7 +175,7 @@ public class ModuleChooserController {
                 if (!selectedMod.isMandatory()) {
                     if (view.getSelectModulesPane().getCredits2() >= 0) {
                         view.getSelectModulesPane().getSelectedMods2().getItems().remove(selectedMod);
-                        view.getSelectModulesPane().getUnSelectedMods2().getItems().add(selectedMod);
+                        view.getSelectModulesPane().getUnselectedMods2().getItems().add(selectedMod);
                         view.getSelectModulesPane().decrementCredits2();
                         view.getSelectModulesPane().updateCredTxt2();
                     }
@@ -203,7 +198,7 @@ public class ModuleChooserController {
         private void clearListViews() {
             view.getSelectModulesPane().getUnselectedMods1().getItems().clear();
             view.getSelectModulesPane().getSelectedMods1().getItems().clear();
-            view.getSelectModulesPane().getUnSelectedMods2().getItems().clear();
+            view.getSelectModulesPane().getUnselectedMods2().getItems().clear();
             view.getSelectModulesPane().getSelectedMods2().getItems().clear();
             view.getSelectModulesPane().getSelectedYLongMods().getItems().clear();
         }
@@ -211,21 +206,30 @@ public class ModuleChooserController {
 
     //Submit Handler..
     private class SubmitHandler implements EventHandler<ActionEvent> {
-        Set<Module> selectedMods = model.getAllSelectedModules();
-
         public void handle(ActionEvent e) {
             totalCredits = view.getSelectModulesPane().getCredits1()
                     + view.getSelectModulesPane().getCredits2();
 
             if (totalCredits == 120) {
-                for (Module mod :
-                        selectedMods) {
-                    System.out.print("[" + mod.getModuleName() + "], ");
-                }
-                System.out.println();
+                submitReservedMods1();
+                submitReservedMods2();
             } else {
                 System.out.println("Not enough modules worth of credits selected.\n" +
                         "Please select 120 credits worth of modules.");
+            }
+        }
+
+        private void submitReservedMods1() {
+            for (Module mod : view.getSelectModulesPane().getUnselectedMods1().getItems()) {
+                model.getAllReservedModules().add(mod);
+                view.getReserveModsPane().getUnselectedModsList1().getItems().add(mod);
+            }
+        }
+
+        private void submitReservedMods2() {
+            for (Module mod : view.getSelectModulesPane().getUnselectedMods2().getItems()) {
+                model.getAllReservedModules().add(mod);
+                view.getReserveModsPane().getUnselectedModsList2().getItems().add(mod);
             }
         }
     }
