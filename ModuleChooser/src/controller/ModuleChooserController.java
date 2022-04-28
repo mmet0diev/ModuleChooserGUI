@@ -75,11 +75,21 @@ public class ModuleChooserController {
     //event handler used for creating a profile
     private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
+            boolean pnumFieldIsEmpty = view.getCreateStudentProfilePane().getStudentPnumber().isEmpty();
+            boolean firstNameFieldIsEmpty = view.getCreateStudentProfilePane().getStudentName().getFirstName().isEmpty();
+            boolean familyNameFieldIsEmpty = view.getCreateStudentProfilePane().getStudentName().getFamilyName().isEmpty();
+            boolean emailFieldIsEmpty = view.getCreateStudentProfilePane().getStudentEmail().isEmpty();
+
             model.setStudentCourse(view.getCreateStudentProfilePane().getSelectedCourse());
-            model.setStudentPnumber(view.getCreateStudentProfilePane().getStudentPnumber());
-            model.setStudentName(view.getCreateStudentProfilePane().getStudentName());
-            model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
-            model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
+            if (!pnumFieldIsEmpty && !firstNameFieldIsEmpty && !familyNameFieldIsEmpty && !emailFieldIsEmpty) {
+                model.setStudentPnumber(view.getCreateStudentProfilePane().getStudentPnumber());
+                model.setStudentName(view.getCreateStudentProfilePane().getStudentName());
+                model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
+                model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
+            } else {
+                System.out.println("Some or none fields are empty!\n Enter appropriate data.");
+            }
+
 
             if (!view.getSelectModulesPane().getCreated()) {
                 view.getSelectModulesPane().initSelectModulesPane(model.getStudentCourse());
@@ -87,15 +97,16 @@ public class ModuleChooserController {
             }
             addCompulsoryToSelectedMods();
         }
-        private void addCompulsoryToSelectedMods(){
+
+        private void addCompulsoryToSelectedMods() {
             Course selectedCourse = model.getStudentCourse();
-            if(selectedCourse.getCourseName().equals("Software Engineering")){
-            model.addSelectedModule(view.getSelectModulesPane().getSelectedYLongMods().getItems().get(0));
-            model.addSelectedModule(view.getSelectModulesPane().getSelectedMods1().getItems().get(0));
-            model.addSelectedModule(view.getSelectModulesPane().getSelectedMods2().getItems().get(0));
+            if (selectedCourse.getCourseName().equals("Software Engineering")) {
+                model.addSelectedModule(view.getSelectModulesPane().getSelectedYLongMods().getItems().get(0));
+                model.addSelectedModule(view.getSelectModulesPane().getSelectedMods1().getItems().get(0));
+                model.addSelectedModule(view.getSelectModulesPane().getSelectedMods2().getItems().get(0));
             }
 
-            if(selectedCourse.getCourseName().equals("Computer Science")){
+            if (selectedCourse.getCourseName().equals("Computer Science")) {
                 model.addSelectedModule(view.getSelectModulesPane().getSelectedYLongMods().getItems().get(0));
                 model.addSelectedModule(view.getSelectModulesPane().getSelectedMods1().getItems().get(0));
             }
@@ -201,17 +212,18 @@ public class ModuleChooserController {
     //Submit Handler..
     private class SubmitHandler implements EventHandler<ActionEvent> {
         Set<Module> selectedMods = model.getAllSelectedModules();
+
         public void handle(ActionEvent e) {
             totalCredits = view.getSelectModulesPane().getCredits1()
-            + view.getSelectModulesPane().getCredits2();
+                    + view.getSelectModulesPane().getCredits2();
 
-            if(totalCredits == 120) {
+            if (totalCredits == 120) {
                 for (Module mod :
                         selectedMods) {
                     System.out.print("[" + mod.getModuleName() + "], ");
                 }
                 System.out.println();
-            }else{
+            } else {
                 System.out.println("Not enough modules worth of credits selected.\n" +
                         "Please select 120 credits worth of modules.");
             }

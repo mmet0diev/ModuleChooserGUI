@@ -63,6 +63,8 @@ public class ModuleChooserRootPane extends BorderPane {
 
 	public SelectModulesRootPane getSelectModulesPane(){ return selectModsPane;	}
 
+	public ReserveModsRootPane getReserveModsPane(){ return reserveModsPane;}
+
 
 	//method to allow the controller to change tabs
 	public void changeTab(int index) {
