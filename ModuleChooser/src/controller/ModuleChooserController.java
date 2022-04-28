@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -9,10 +8,6 @@ import model.Module;
 import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 
 public class ModuleChooserController {
@@ -23,7 +18,10 @@ public class ModuleChooserController {
 
     private CreateStudentProfilePane cspp;
     private ModuleChooserMenuBar mcmb;
+
+    private Module focusedMod;
     private int totalCredits;
+    private int reserveCredits;
 
     public ModuleChooserController(ModuleChooserRootPane view, StudentProfile model) {
         //initialise view and model fields
@@ -65,6 +63,18 @@ public class ModuleChooserController {
         //attach event handler to submitBtn
         view.getSelectModulesPane().addSubmitBtnHandler(new SubmitHandler());
 
+        //attach event handler to addBtn1 in reserved mods pane
+        view.getReserveModsPane().addAddBtn1Handler(new AddReserveModsHandler1());
+
+        //attach event hadnler to addBtn2 in reserved mods pane
+        view.getReserveModsPane().addAddBtn2Handler(new AddReserveModsHandler2());
+
+        //attach event handler to rmBtn1 in reserved mods pane
+        view.getReserveModsPane().addRmBtn1Handler(new RmReserveModsHandler1());
+
+        //attach event handler to rmBtn2 in reserved mods pane
+        view.getReserveModsPane().addRmBtn2Handler(new RmReserveModsHandler2());
+
         //An information alert whenever one clicks the "about" menuitem in the about menu.
         mcmb.addAboutHandler(new CreateAboutAlertHandler());
 
@@ -91,6 +101,7 @@ public class ModuleChooserController {
                 view.getSelectModulesPane().setCreated(true);
             }
             addCompulsoryToSelectedMods();
+            System.out.println("Created.");
         }
 
         private void addCompulsoryToSelectedMods() {
@@ -108,20 +119,21 @@ public class ModuleChooserController {
         }
     }
 
+    //Select Modules Tab Handlers
     //Add Handlers..
     private class AddModsHandler1 implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
-            Module selectedMod =
+            focusedMod =
                     view.getSelectModulesPane().getUnselectedMods1().getSelectionModel().getSelectedItem();
 
-            if (view.getSelectModulesPane().getUnselectedMods1().getItems().contains(selectedMod)) {
-                if (!view.getSelectModulesPane().getSelectedMods1().getItems().contains(selectedMod)) {
+            if (view.getSelectModulesPane().getUnselectedMods1().getItems().contains(focusedMod)) {
+                if (!view.getSelectModulesPane().getSelectedMods1().getItems().contains(focusedMod)) {
                     if (view.getSelectModulesPane().getCredits1() <= 45) {
-                        view.getSelectModulesPane().getSelectedMods1().getItems().add(selectedMod);
-                        view.getSelectModulesPane().getUnselectedMods1().getItems().remove(selectedMod);
+                        view.getSelectModulesPane().getSelectedMods1().getItems().add(focusedMod);
+                        view.getSelectModulesPane().getUnselectedMods1().getItems().remove(focusedMod);
                         view.getSelectModulesPane().incrementCredits1();
                         view.getSelectModulesPane().updateCredTxt1();
-                        model.getAllSelectedModules().add(selectedMod);
+                        model.getAllSelectedModules().add(focusedMod);
                     }
                 }
             }
@@ -130,17 +142,17 @@ public class ModuleChooserController {
 
     private class AddModsHandler2 implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
-            Module selectedMod =
+            focusedMod =
                     view.getSelectModulesPane().getUnselectedMods2().getSelectionModel().getSelectedItem();
 
-            if (view.getSelectModulesPane().getUnselectedMods2().getItems().contains(selectedMod)) {
-                if (!view.getSelectModulesPane().getSelectedMods2().getItems().contains(selectedMod)) {
+            if (view.getSelectModulesPane().getUnselectedMods2().getItems().contains(focusedMod)) {
+                if (!view.getSelectModulesPane().getSelectedMods2().getItems().contains(focusedMod)) {
                     if (view.getSelectModulesPane().getCredits2() <= 45) {
-                        view.getSelectModulesPane().getSelectedMods2().getItems().add(selectedMod);
-                        view.getSelectModulesPane().getUnselectedMods2().getItems().remove(selectedMod);
+                        view.getSelectModulesPane().getSelectedMods2().getItems().add(focusedMod);
+                        view.getSelectModulesPane().getUnselectedMods2().getItems().remove(focusedMod);
                         view.getSelectModulesPane().incrementCredits2();
                         view.getSelectModulesPane().updateCredTxt2();
-                        model.getAllSelectedModules().add(selectedMod);
+                        model.getAllSelectedModules().add(focusedMod);
                     }
                 }
             }
@@ -150,14 +162,14 @@ public class ModuleChooserController {
     //Remove Handlers..
     private class RemoveModsHandler1 implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
-            Module selectedMod =
+            focusedMod =
                     view.getSelectModulesPane().getSelectedMods1().getSelectionModel().getSelectedItem();
 
-            if (view.getSelectModulesPane().getSelectedMods1().getItems().contains(selectedMod)) {
-                if (!selectedMod.isMandatory()) {
+            if (view.getSelectModulesPane().getSelectedMods1().getItems().contains(focusedMod)) {
+                if (!focusedMod.isMandatory()) {
                     if (view.getSelectModulesPane().getCredits1() >= 0) {
-                        view.getSelectModulesPane().getSelectedMods1().getItems().remove(selectedMod);
-                        view.getSelectModulesPane().getUnselectedMods1().getItems().add(selectedMod);
+                        view.getSelectModulesPane().getSelectedMods1().getItems().remove(focusedMod);
+                        view.getSelectModulesPane().getUnselectedMods1().getItems().add(focusedMod);
                         view.getSelectModulesPane().decrementCredits1();
                         view.getSelectModulesPane().updateCredTxt1();
                     }
@@ -168,14 +180,14 @@ public class ModuleChooserController {
 
     private class RemoveModsHandler2 implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
-            Module selectedMod =
+            focusedMod =
                     view.getSelectModulesPane().getSelectedMods2().getSelectionModel().getSelectedItem();
 
-            if (view.getSelectModulesPane().getSelectedMods2().getItems().contains(selectedMod)) {
-                if (!selectedMod.isMandatory()) {
+            if (view.getSelectModulesPane().getSelectedMods2().getItems().contains(focusedMod)) {
+                if (!focusedMod.isMandatory()) {
                     if (view.getSelectModulesPane().getCredits2() >= 0) {
-                        view.getSelectModulesPane().getSelectedMods2().getItems().remove(selectedMod);
-                        view.getSelectModulesPane().getUnselectedMods2().getItems().add(selectedMod);
+                        view.getSelectModulesPane().getSelectedMods2().getItems().remove(focusedMod);
+                        view.getSelectModulesPane().getUnselectedMods2().getItems().add(focusedMod);
                         view.getSelectModulesPane().decrementCredits2();
                         view.getSelectModulesPane().updateCredTxt2();
                     }
@@ -234,9 +246,65 @@ public class ModuleChooserController {
         }
     }
 
-    private class AddReserveModsHandler implements EventHandler<ActionEvent>{
+    //Reserve Modules Tab Handlers
+    //Add Handlers
+    private class AddReserveModsHandler1 implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent e) {
+            focusedMod =
+                    view.getReserveModsPane().getUnselectedModsList1().getSelectionModel().getSelectedItem();
+
+            if (view.getReserveModsPane().getUnselectedModsList1().getItems().contains(focusedMod)) {
+                if (!view.getReserveModsPane().getReservedModsList1().getItems().contains(focusedMod)) {
+                    model.getAllReservedModules().add(focusedMod);
+                    view.getReserveModsPane().getUnselectedModsList1().getItems().remove(focusedMod);
+                    view.getReserveModsPane().getReservedModsList1().getItems().add(focusedMod);
+                }
+            }
+        }
+    }
+
+    private class AddReserveModsHandler2 implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent e) {
+            focusedMod =
+                    view.getReserveModsPane().getUnselectedModsList2().getSelectionModel().getSelectedItem();
+
+            if (view.getReserveModsPane().getUnselectedModsList2().getItems().contains(focusedMod)) {
+                if (!view.getReserveModsPane().getReservedModsList2().getItems().contains(focusedMod)) {
+                    model.getAllReservedModules().add(focusedMod);
+                    view.getReserveModsPane().getUnselectedModsList2().getItems().remove(focusedMod);
+                    view.getReserveModsPane().getReservedModsList2().getItems().add(focusedMod);
+                }
+            }
+        }
+    }
+
+    private class RmReserveModsHandler1 implements EventHandler<ActionEvent>{
         public void handle(ActionEvent e){
-            
+            focusedMod =
+                    view.getReserveModsPane().getReservedModsList1().getSelectionModel().getSelectedItem();
+
+            if(view.getReserveModsPane().getReservedModsList1().getItems().contains(focusedMod)){
+                if(!view.getReserveModsPane().getUnselectedModsList1().getItems().contains(focusedMod)){
+                    model.getAllReservedModules().remove(focusedMod);
+                    view.getReserveModsPane().getReservedModsList1().getItems().remove(focusedMod);
+                    view.getReserveModsPane().getUnselectedModsList1().getItems().add(focusedMod);
+                }
+            }
+        }
+    }
+
+    private class RmReserveModsHandler2 implements EventHandler<ActionEvent>{
+        public void handle(ActionEvent e){
+            focusedMod =
+                    view.getReserveModsPane().getReservedModsList2().getSelectionModel().getSelectedItem();
+
+            if(view.getReserveModsPane().getReservedModsList2().getItems().contains(focusedMod)){
+                if(!view.getReserveModsPane().getUnselectedModsList2().getItems().contains(focusedMod)){
+                    model.getAllReservedModules().remove(focusedMod);
+                    view.getReserveModsPane().getReservedModsList2().getItems().remove(focusedMod);
+                    view.getReserveModsPane().getUnselectedModsList2().getItems().add(focusedMod);
+                }
+            }
         }
     }
 
