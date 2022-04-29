@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 public class ReserveModsRootPane extends Accordion {
     private ListView<Module> unselectedModsList1, unselectedModsList2, reservedModsList1, reservedModsList2;
     private Button addBtn1, rmBtn1, confirmBtn1, addBtn2, rmBtn2, confirmBtn2;
+    private int resCredits1, resCredits2;
 
     public ReserveModsRootPane() {
         this.setPadding(new Insets(8));
@@ -110,6 +111,20 @@ public class ReserveModsRootPane extends Accordion {
             this.getChildren().addAll(unselectModsBox, reserveModsBox);
         }
     }
+
+    public int getResCredits1(){
+        return resCredits1;
+    }
+
+    public int getResCredits2(){
+        return resCredits2;
+    }
+
+    public void incrementResCreds1(){resCredits1+=15;}
+    public void incrementResCreds2(){resCredits2+=15;}
+    public void decrementResCreds1(){resCredits1-=15;}
+    public void decrementResCreds2(){resCredits2-=15;}
+
     public ListView<Module> getUnselectedModsList1(){
         return unselectedModsList1;
     }
@@ -126,9 +141,6 @@ public class ReserveModsRootPane extends Accordion {
         return reservedModsList2;
     }
 
-    public Button getAddBtn1(){
-        return addBtn1;
-    }
     public void addAddBtn1Handler(EventHandler<ActionEvent> handler){
         addBtn1.setOnAction(handler);
     }

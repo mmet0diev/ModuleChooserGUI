@@ -21,7 +21,7 @@ public class ModuleChooserController {
 
     private Module focusedMod;
     private int totalCredits;
-    private int reserveCredits;
+    private int totalResCredits;
 
     public ModuleChooserController(ModuleChooserRootPane view, StudentProfile model) {
         //initialise view and model fields
@@ -61,7 +61,7 @@ public class ModuleChooserController {
         view.getSelectModulesPane().addResetBtnHandler(new ResetHandler());
 
         //attach event handler to submitBtn
-        view.getSelectModulesPane().addSubmitBtnHandler(new SubmitHandler());
+        view.getSelectModulesPane().addSubmitBtnHandler(new SelectModsSubmitHandler());
 
         //attach event handler to addBtn1 in reserved mods pane
         view.getReserveModsPane().addAddBtn1Handler(new AddReserveModsHandler1());
@@ -74,6 +74,12 @@ public class ModuleChooserController {
 
         //attach event handler to rmBtn2 in reserved mods pane
         view.getReserveModsPane().addRmBtn2Handler(new RmReserveModsHandler2());
+
+        //attach event handler to confirmBtn1 in reserved mods pane
+        view.getReserveModsPane().addConfirmBtnHandler1(new ResModsConfirmHandler1());
+
+        //attach event handler to confirmBtn2 in reserved mods pane
+        view.getReserveModsPane().addConfirmBtnHandler2(new ResModsConfirmHandler2());
 
         //An information alert whenever one clicks the "about" menuitem in the about menu.
         mcmb.addAboutHandler(new CreateAboutAlertHandler());
@@ -217,7 +223,7 @@ public class ModuleChooserController {
     }
 
     //Submit Handler..
-    private class SubmitHandler implements EventHandler<ActionEvent> {
+    private class SelectModsSubmitHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
             totalCredits = view.getSelectModulesPane().getCredits1()
                     + view.getSelectModulesPane().getCredits2();
@@ -233,16 +239,18 @@ public class ModuleChooserController {
 
         private void submitReservedMods1() {
             for (Module mod : view.getSelectModulesPane().getUnselectedMods1().getItems()) {
-                model.getAllReservedModules().add(mod);
+                model.getAllSelectedModules().add(mod);
                 view.getReserveModsPane().getUnselectedModsList1().getItems().add(mod);
             }
+            System.out.println(model.getAllSelectedModules());
         }
 
         private void submitReservedMods2() {
             for (Module mod : view.getSelectModulesPane().getUnselectedMods2().getItems()) {
-                model.getAllReservedModules().add(mod);
+                model.getAllSelectedModules().add(mod);
                 view.getReserveModsPane().getUnselectedModsList2().getItems().add(mod);
             }
+            System.out.println(model.getAllReservedModules());
         }
     }
 
@@ -255,9 +263,11 @@ public class ModuleChooserController {
 
             if (view.getReserveModsPane().getUnselectedModsList1().getItems().contains(focusedMod)) {
                 if (!view.getReserveModsPane().getReservedModsList1().getItems().contains(focusedMod)) {
-                    model.getAllReservedModules().add(focusedMod);
-                    view.getReserveModsPane().getUnselectedModsList1().getItems().remove(focusedMod);
-                    view.getReserveModsPane().getReservedModsList1().getItems().add(focusedMod);
+                    if(view.getReserveModsPane().getResCredits1() < 30) {
+                        view.getReserveModsPane().getUnselectedModsList1().getItems().remove(focusedMod);
+                        view.getReserveModsPane().getReservedModsList1().getItems().add(focusedMod);
+                        view.getReserveModsPane().incrementResCreds1();
+                    }
                 }
             }
         }
@@ -270,9 +280,11 @@ public class ModuleChooserController {
 
             if (view.getReserveModsPane().getUnselectedModsList2().getItems().contains(focusedMod)) {
                 if (!view.getReserveModsPane().getReservedModsList2().getItems().contains(focusedMod)) {
-                    model.getAllReservedModules().add(focusedMod);
-                    view.getReserveModsPane().getUnselectedModsList2().getItems().remove(focusedMod);
-                    view.getReserveModsPane().getReservedModsList2().getItems().add(focusedMod);
+                    if(view.getReserveModsPane().getResCredits2() < 30) {
+                        view.getReserveModsPane().getUnselectedModsList2().getItems().remove(focusedMod);
+                        view.getReserveModsPane().getReservedModsList2().getItems().add(focusedMod);
+                        view.getReserveModsPane().incrementResCreds2();
+                    }
                 }
             }
         }
@@ -284,10 +296,12 @@ public class ModuleChooserController {
                     view.getReserveModsPane().getReservedModsList1().getSelectionModel().getSelectedItem();
 
             if(view.getReserveModsPane().getReservedModsList1().getItems().contains(focusedMod)){
-                if(!view.getReserveModsPane().getUnselectedModsList1().getItems().contains(focusedMod)){
-                    model.getAllReservedModules().remove(focusedMod);
-                    view.getReserveModsPane().getReservedModsList1().getItems().remove(focusedMod);
-                    view.getReserveModsPane().getUnselectedModsList1().getItems().add(focusedMod);
+                if(!view.getReserveModsPane().getUnselectedModsList1().getItems().contains(focusedMod)) {
+                    if (view.getReserveModsPane().getResCredits1() >= 0) {
+                        view.getReserveModsPane().getReservedModsList1().getItems().remove(focusedMod);
+                        view.getReserveModsPane().getUnselectedModsList1().getItems().add(focusedMod);
+                        view.getReserveModsPane().decrementResCreds1();
+                    }
                 }
             }
         }
@@ -300,10 +314,34 @@ public class ModuleChooserController {
 
             if(view.getReserveModsPane().getReservedModsList2().getItems().contains(focusedMod)){
                 if(!view.getReserveModsPane().getUnselectedModsList2().getItems().contains(focusedMod)){
-                    model.getAllReservedModules().remove(focusedMod);
-                    view.getReserveModsPane().getReservedModsList2().getItems().remove(focusedMod);
-                    view.getReserveModsPane().getUnselectedModsList2().getItems().add(focusedMod);
+                    if(view.getReserveModsPane().getResCredits2() >= 0) {
+                        view.getReserveModsPane().getReservedModsList2().getItems().remove(focusedMod);
+                        view.getReserveModsPane().getUnselectedModsList2().getItems().add(focusedMod);
+                        view.getReserveModsPane().decrementResCreds2();
+                    }
                 }
+            }
+        }
+    }
+
+    private class ResModsConfirmHandler1 implements EventHandler<ActionEvent>{
+        public void handle(ActionEvent e){
+            if(view.getReserveModsPane().getResCredits1() == 30) {
+                for (Module mod : view.getReserveModsPane().getReservedModsList1().getItems()) {
+                    model.getAllReservedModules().add(mod);
+                }
+                System.out.println(model.getAllReservedModules());
+            }
+        }
+    }
+
+    private class ResModsConfirmHandler2 implements EventHandler<ActionEvent>{
+        public void handle(ActionEvent e){
+            if(view.getReserveModsPane().getResCredits2() == 30) {
+                for (Module mod : view.getReserveModsPane().getReservedModsList2().getItems()) {
+                    model.getAllReservedModules().add(mod);
+                }
+                System.out.println(model.getAllReservedModules());
             }
         }
     }
