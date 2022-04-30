@@ -71,31 +71,4 @@ public class ModuleChooserRootPane extends BorderPane {
 		tp.getSelectionModel().select(index);
 	}
 
-	private class OverviewPane extends VBox {
-		private OverviewPane(){
-			this.setPadding(new Insets(8));
-			this.setSpacing(8);
-			this.setAlignment(Pos.TOP_CENTER);
-
-			ListView<Module> profileList = new ListView<>();
-			profileList.setPrefSize(400, 75);
-
-			//Inner HBox holding 2 listViews
-			HBox listViewBox = new HBox();
-			listViewBox.setAlignment(Pos.CENTER);
-			listViewBox.setSpacing(8);
-			ListView<Module> selectModsList = new ListView<>();
-			selectModsList.setPrefSize(400,350);
-			ListView<Module> reserveModsList = new ListView<>();
-			reserveModsList.setPrefSize(400,350);
-
-			listViewBox.getChildren().addAll(selectModsList, reserveModsList);
-
-			Button svBtn = new Button("Save Overview");
-
-			this.getChildren().add(profileList);
-			this.getChildren().add(listViewBox);
-			this.getChildren().add(svBtn);
-		}
-	}
 }

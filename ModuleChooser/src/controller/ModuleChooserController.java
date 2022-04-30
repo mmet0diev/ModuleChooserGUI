@@ -9,6 +9,8 @@ import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
 
+import java.util.Locale;
+
 
 public class ModuleChooserController {
 
@@ -21,7 +23,8 @@ public class ModuleChooserController {
 
     private Module focusedMod;
     private int totalCredits;
-    private int totalResCredits;
+
+    private int currentTab;
 
     public ModuleChooserController(ModuleChooserRootPane view, StudentProfile model) {
         //initialise view and model fields
@@ -88,27 +91,42 @@ public class ModuleChooserController {
         mcmb.addExitHandler(e -> System.exit(0));
     }
 
+    private void goNextTab() {
+        if (currentTab >= 0 && currentTab <= 3) {
+            view.changeTab(++currentTab);
+        }
+    }
+
     //event handler used for creating a profile
     private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
-//            boolean pnumFieldIsEmpty = view.getCreateStudentProfilePane().getStudentPnumber().isEmpty();
-//            boolean firstNameFieldIsEmpty = view.getCreateStudentProfilePane().getStudentName().getFirstName().isEmpty();
-//            boolean familyNameFieldIsEmpty = view.getCreateStudentProfilePane().getStudentName().getFamilyName().isEmpty();
-//            boolean emailFieldIsEmpty = view.getCreateStudentProfilePane().getStudentEmail().isEmpty();
+            if (checkStudentPNum() && checkStudentName() && checkEmail()) {
+                model.setStudentCourse(view.getCreateStudentProfilePane().getSelectedCourse());
+                model.setStudentPnumber(view.getCreateStudentProfilePane().getStudentPnumber());
+                model.setStudentName(view.getCreateStudentProfilePane().getStudentName());
+                model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
+                model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
 
-            model.setStudentCourse(view.getCreateStudentProfilePane().getSelectedCourse());
-            model.setStudentPnumber(view.getCreateStudentProfilePane().getStudentPnumber());
-            model.setStudentName(view.getCreateStudentProfilePane().getStudentName());
-            model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
-            model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
+                createStudentProfileLock();
+                addCompulsoryToSelectedMods();
+                System.out.println("Created.");
+                goNextTab();
+            } else {
+                System.out.println("\nInvalid data entered:");
+                checkStudentPNum();
+                checkStudentName();
+                checkEmail();
+//                checkDate();
+            }
+        }
 
+        private void createStudentProfileLock() {
             if (!view.getSelectModulesPane().getCreated()) {
                 view.getSelectModulesPane().initSelectModulesPane(model.getStudentCourse());
                 view.getSelectModulesPane().setCreated(true);
             }
-            addCompulsoryToSelectedMods();
-            System.out.println("Created.");
         }
+
 
         private void addCompulsoryToSelectedMods() {
             Course selectedCourse = model.getStudentCourse();
@@ -123,6 +141,59 @@ public class ModuleChooserController {
                 model.addSelectedModule(view.getSelectModulesPane().getSelectedMods1().getItems().get(0));
             }
         }
+
+        private boolean checkStudentPNum() {
+            boolean isValid;
+            String pnum = view.getCreateStudentProfilePane().getStudentPnumber();
+
+            isValid = !pnum.isEmpty() && pnum.matches("[0-9]");
+
+            if(!isValid){
+                System.out.println("Invalid p number details.");
+            }
+
+            return isValid;
+        }
+
+        private boolean checkStudentName() {
+            boolean isValid;
+            String firstName = view.getCreateStudentProfilePane().getStudentName().getFirstName();
+            String secondName = view.getCreateStudentProfilePane().getStudentName().getFamilyName();
+
+            isValid = !firstName.isEmpty() && !secondName.isEmpty();
+
+            if(!isValid){
+                System.out.println("Invalid name(s) data.");
+            }
+
+            return isValid;
+        }
+
+        //"^[_A-Za-z0-9-+]+(\.[_A-Za-z0-9-]+)@"+ "[A-Za-z0-9-]+(\.[A-Za-z0-9]+)(\.[A-Za-z]{2,})$"
+        private boolean checkEmail() {
+            boolean isValid;
+            String mail = view.getCreateStudentProfilePane().getStudentEmail();
+
+            isValid = !mail.isEmpty();
+
+            if(!isValid){
+                System.out.println("Invalid mail data.");
+            }
+
+            return isValid;
+        }
+
+//        private boolean checkDate() {
+//            boolean isValid = false;
+//            String strDate = view.getCreateStudentProfilePane().getStudentDate().toString();
+//            if (!strDate.equals("")) {
+//                isValid = true;
+//            } else {
+//                System.out.println("Date field empty.");
+//            }
+//
+//            return isValid;
+//        }
     }
 
     //Select Modules Tab Handlers
@@ -263,7 +334,7 @@ public class ModuleChooserController {
 
             if (view.getReserveModsPane().getUnselectedModsList1().getItems().contains(focusedMod)) {
                 if (!view.getReserveModsPane().getReservedModsList1().getItems().contains(focusedMod)) {
-                    if(view.getReserveModsPane().getResCredits1() < 30) {
+                    if (view.getReserveModsPane().getResCredits1() < 30) {
                         view.getReserveModsPane().getUnselectedModsList1().getItems().remove(focusedMod);
                         view.getReserveModsPane().getReservedModsList1().getItems().add(focusedMod);
                         view.getReserveModsPane().incrementResCreds1();
@@ -280,7 +351,7 @@ public class ModuleChooserController {
 
             if (view.getReserveModsPane().getUnselectedModsList2().getItems().contains(focusedMod)) {
                 if (!view.getReserveModsPane().getReservedModsList2().getItems().contains(focusedMod)) {
-                    if(view.getReserveModsPane().getResCredits2() < 30) {
+                    if (view.getReserveModsPane().getResCredits2() < 30) {
                         view.getReserveModsPane().getUnselectedModsList2().getItems().remove(focusedMod);
                         view.getReserveModsPane().getReservedModsList2().getItems().add(focusedMod);
                         view.getReserveModsPane().incrementResCreds2();
@@ -290,13 +361,13 @@ public class ModuleChooserController {
         }
     }
 
-    private class RmReserveModsHandler1 implements EventHandler<ActionEvent>{
-        public void handle(ActionEvent e){
+    private class RmReserveModsHandler1 implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent e) {
             focusedMod =
                     view.getReserveModsPane().getReservedModsList1().getSelectionModel().getSelectedItem();
 
-            if(view.getReserveModsPane().getReservedModsList1().getItems().contains(focusedMod)){
-                if(!view.getReserveModsPane().getUnselectedModsList1().getItems().contains(focusedMod)) {
+            if (view.getReserveModsPane().getReservedModsList1().getItems().contains(focusedMod)) {
+                if (!view.getReserveModsPane().getUnselectedModsList1().getItems().contains(focusedMod)) {
                     if (view.getReserveModsPane().getResCredits1() >= 0) {
                         view.getReserveModsPane().getReservedModsList1().getItems().remove(focusedMod);
                         view.getReserveModsPane().getUnselectedModsList1().getItems().add(focusedMod);
@@ -307,14 +378,14 @@ public class ModuleChooserController {
         }
     }
 
-    private class RmReserveModsHandler2 implements EventHandler<ActionEvent>{
-        public void handle(ActionEvent e){
+    private class RmReserveModsHandler2 implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent e) {
             focusedMod =
                     view.getReserveModsPane().getReservedModsList2().getSelectionModel().getSelectedItem();
 
-            if(view.getReserveModsPane().getReservedModsList2().getItems().contains(focusedMod)){
-                if(!view.getReserveModsPane().getUnselectedModsList2().getItems().contains(focusedMod)){
-                    if(view.getReserveModsPane().getResCredits2() >= 0) {
+            if (view.getReserveModsPane().getReservedModsList2().getItems().contains(focusedMod)) {
+                if (!view.getReserveModsPane().getUnselectedModsList2().getItems().contains(focusedMod)) {
+                    if (view.getReserveModsPane().getResCredits2() >= 0) {
                         view.getReserveModsPane().getReservedModsList2().getItems().remove(focusedMod);
                         view.getReserveModsPane().getUnselectedModsList2().getItems().add(focusedMod);
                         view.getReserveModsPane().decrementResCreds2();
@@ -324,9 +395,9 @@ public class ModuleChooserController {
         }
     }
 
-    private class ResModsConfirmHandler1 implements EventHandler<ActionEvent>{
-        public void handle(ActionEvent e){
-            if(view.getReserveModsPane().getResCredits1() == 30) {
+    private class ResModsConfirmHandler1 implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent e) {
+            if (view.getReserveModsPane().getResCredits1() == 30) {
                 for (Module mod : view.getReserveModsPane().getReservedModsList1().getItems()) {
                     model.getAllReservedModules().add(mod);
                 }
@@ -335,9 +406,9 @@ public class ModuleChooserController {
         }
     }
 
-    private class ResModsConfirmHandler2 implements EventHandler<ActionEvent>{
-        public void handle(ActionEvent e){
-            if(view.getReserveModsPane().getResCredits2() == 30) {
+    private class ResModsConfirmHandler2 implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent e) {
+            if (view.getReserveModsPane().getResCredits2() == 30) {
                 for (Module mod : view.getReserveModsPane().getReservedModsList2().getItems()) {
                     model.getAllReservedModules().add(mod);
                 }
@@ -345,6 +416,7 @@ public class ModuleChooserController {
             }
         }
     }
+
 
     private class CreateAboutAlertHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
