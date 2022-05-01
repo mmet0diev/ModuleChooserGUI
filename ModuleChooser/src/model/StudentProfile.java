@@ -97,5 +97,4 @@ public class StudentProfile {
 				+ "\n, selectedModules=" + selectedModules
 				+ "\n, reservedModules=" + reservedModules + "]";
 	}
-	
 }

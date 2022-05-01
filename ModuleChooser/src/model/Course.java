@@ -43,6 +43,6 @@ public class Course {
 	}
 	
 	public String actualToString() {
-		return "Course:[courseName=" + courseName + ", modulesOnCourse=" + modulesOnCourse + "]";
+		return "Course:[courseName=" + courseName + "\n, modulesOnCourse=" + modulesOnCourse + "]";
 	}
 }

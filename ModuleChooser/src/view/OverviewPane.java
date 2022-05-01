@@ -7,6 +7,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.Module;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 public class OverviewPane extends VBox {
     private ListView<String> studentDataList;
@@ -48,5 +50,7 @@ public class OverviewPane extends VBox {
     }
 
     public ListView<String> getStudentDataList(){return studentDataList;}
+
+    public void addSaveBtnHandler(EventHandler<ActionEvent> handler){ saveBtn.setOnAction(handler);}
 
 }

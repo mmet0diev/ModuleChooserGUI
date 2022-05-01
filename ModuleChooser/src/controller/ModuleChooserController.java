@@ -9,6 +9,8 @@ import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.text.DateFormat;
 import java.time.LocalDate;
 
@@ -25,6 +27,8 @@ public class ModuleChooserController {
     private Module focusedMod;
     private int totalCredits;
     private int currentTab;
+
+    private FileWriter fileWriter;
 
     public ModuleChooserController(ModuleChooserRootPane view, StudentProfile model) {
         //initialise view and model fields
@@ -84,6 +88,9 @@ public class ModuleChooserController {
         //attach event handler to confirmBtn2 in reserved mods pane
         view.getReserveModsPane().addConfirmBtnHandler2(new ResModsConfirmHandler2());
 
+        //attach event handler to saveBtn in Overview Pane
+        view.getOP().addSaveBtnHandler(new SaveOverviewDataHandler());
+
         //An information alert whenever one clicks the "about" menuitem in the about menu.
         mcmb.addAboutHandler(new CreateAboutAlertHandler());
 
@@ -94,6 +101,12 @@ public class ModuleChooserController {
     private void goNextTab() {
         if (currentTab >= 0 && currentTab <= 3) {
             view.changeTab(++currentTab);
+        }
+    }
+
+    private void goBackTab() {
+        if (currentTab > 0 && currentTab <= 3) {
+            view.changeTab(--currentTab);
         }
     }
 
@@ -119,7 +132,8 @@ public class ModuleChooserController {
             }
         }
 
-
+        /*Throws an exception when resetting the data, and trying to create a new profile from previous "Computer Science"
+        to "Software Engineering" course */
         private void addCompulsoryToSelectedMods() {
             Course selectedCourse = model.getStudentCourse();
             if (selectedCourse.getCourseName().equals("Software Engineering")) {
@@ -274,6 +288,7 @@ public class ModuleChooserController {
             model.clearSelectedModules();
             clearListViews();
             view.getSelectModulesPane().initSelectModulesPane(model.getStudentCourse());
+            goBackTab();
         }
 
         private void clearListViews() {
@@ -390,7 +405,7 @@ public class ModuleChooserController {
         public void handle(ActionEvent e) {
             if (view.getReserveModsPane().getResCredits1() == 30) {
                 for (Module mod : view.getReserveModsPane().getReservedModsList1().getItems()) {
-                    model.getAllReservedModules().add(mod);
+                    model.addReservedModule(mod);
                 }
                 System.out.println("Reserve Modules added: " + model.getAllReservedModules());
             } else {
@@ -403,13 +418,13 @@ public class ModuleChooserController {
         public void handle(ActionEvent e) {
             if (view.getReserveModsPane().getResCredits2() == 30) {
                 for (Module mod : view.getReserveModsPane().getReservedModsList2().getItems()) {
-                    model.getAllReservedModules().add(mod);
+                    model.addReservedModule(mod);
                 }
             } else {
                 System.out.println("Not enough reserve modules worth of credits.");
             }
 
-            if(view.getReserveModsPane().getResCredits1() + view.getReserveModsPane().getResCredits2() == 60){
+            if (view.getReserveModsPane().getResCredits1() + view.getReserveModsPane().getResCredits2() == 60) {
                 addStudentDataToOverview();
                 addSelectedModsToOverview();
                 addResModsToOverview();
@@ -419,18 +434,34 @@ public class ModuleChooserController {
         }
     }
 
-    private void addStudentDataToOverview(){
+    private void addStudentDataToOverview() {
         String pnum = model.getStudentPnumber();
         Name name = model.getStudentName();
         String mail = model.getStudentEmail();
         LocalDate date = model.getSubmissionDate();
 
-        view.getOP().getStudentDataList().getItems().add("P number - " + pnum+"\n");
-        view.getOP().getStudentDataList().getItems().add("First name - "+name.getFirstName()+"\n");
-        view.getOP().getStudentDataList().getItems().add("Family name - "+name.getFamilyName()+"\n");
-        view.getOP().getStudentDataList().getItems().add("Email address - " +mail+"\n");
+        view.getOP().getStudentDataList().getItems().add("P number - " + pnum + "\n");
+        view.getOP().getStudentDataList().getItems().add("First name - " + name.getFirstName() + "\n");
+        view.getOP().getStudentDataList().getItems().add("Family name - " + name.getFamilyName() + "\n");
+        view.getOP().getStudentDataList().getItems().add("Email address - " + mail + "\n");
         view.getOP().getStudentDataList().getItems().add("Submission date - " + date + "\n");
 
+    }
+
+    private class SaveOverviewDataHandler implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent event) {
+            try {
+                String outputData = model.toString();
+                fileWriter = new FileWriter("student_data.txt");
+                fileWriter.write(outputData);
+                System.out.println("Student data was written.");
+                fileWriter.close();
+            } catch (Exception e) {
+                System.out.println("Error, could not write to file.");
+                e.printStackTrace();
+            }
+            System.exit(0);
+        }
     }
 
     private void addResModsToOverview() {
