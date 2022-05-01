@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 public class ReserveModsRootPane extends Accordion {
+    TitledPane t1, t2;
     private ListView<Module> unselectedModsList1, unselectedModsList2, reservedModsList1, reservedModsList2;
     private Button addBtn1, rmBtn1, confirmBtn1, addBtn2, rmBtn2, confirmBtn2;
     private int resCredits1, resCredits2;
@@ -19,8 +20,8 @@ public class ReserveModsRootPane extends Accordion {
         SubPaneReserveMods1 reserveMods1 = new SubPaneReserveMods1();
         SubPaneReserveMods2 reserveMods2 = new SubPaneReserveMods2();
 
-        TitledPane t1 = new TitledPane("Term 1 modules", reserveMods1);
-        TitledPane t2 = new TitledPane("Term 2 modules", reserveMods2);
+        t1 = new TitledPane("Term 1 modules", reserveMods1);
+        t2 = new TitledPane("Term 2 modules", reserveMods2);
 
         this.getPanes().add(t1);
         this.getPanes().add(t2);
@@ -111,6 +112,10 @@ public class ReserveModsRootPane extends Accordion {
             this.getChildren().addAll(unselectModsBox, reserveModsBox);
         }
     }
+
+//    public void enableT2(){
+//        t2.setDisable(true);
+//    }
 
     public int getResCredits1(){
         return resCredits1;

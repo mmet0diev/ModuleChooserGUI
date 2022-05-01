@@ -9,7 +9,8 @@ import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
 
-import java.util.Locale;
+import java.text.DateFormat;
+import java.time.LocalDate;
 
 
 public class ModuleChooserController {
@@ -23,7 +24,6 @@ public class ModuleChooserController {
 
     private Module focusedMod;
     private int totalCredits;
-
     private int currentTab;
 
     public ModuleChooserController(ModuleChooserRootPane view, StudentProfile model) {
@@ -100,24 +100,16 @@ public class ModuleChooserController {
     //event handler used for creating a profile
     private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
-            if (checkStudentPNum() && checkStudentName() && checkEmail()) {
-                model.setStudentCourse(view.getCreateStudentProfilePane().getSelectedCourse());
-                model.setStudentPnumber(view.getCreateStudentProfilePane().getStudentPnumber());
-                model.setStudentName(view.getCreateStudentProfilePane().getStudentName());
-                model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
-                model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
+            model.setStudentCourse(view.getCreateStudentProfilePane().getSelectedCourse());
+            model.setStudentPnumber(view.getCreateStudentProfilePane().getStudentPnumber());
+            model.setStudentName(view.getCreateStudentProfilePane().getStudentName());
+            model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
+            model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
 
-                createStudentProfileLock();
-                addCompulsoryToSelectedMods();
-                System.out.println("Created.");
-                goNextTab();
-            } else {
-                System.out.println("\nInvalid data entered:");
-                checkStudentPNum();
-                checkStudentName();
-                checkEmail();
-//                checkDate();
-            }
+            createStudentProfileLock();
+            addCompulsoryToSelectedMods();
+            System.out.println("Created.");
+            goNextTab();
         }
 
         private void createStudentProfileLock() {
@@ -148,7 +140,7 @@ public class ModuleChooserController {
 
             isValid = !pnum.isEmpty() && pnum.matches("[0-9]");
 
-            if(!isValid){
+            if (!isValid) {
                 System.out.println("Invalid p number details.");
             }
 
@@ -162,7 +154,7 @@ public class ModuleChooserController {
 
             isValid = !firstName.isEmpty() && !secondName.isEmpty();
 
-            if(!isValid){
+            if (!isValid) {
                 System.out.println("Invalid name(s) data.");
             }
 
@@ -176,7 +168,7 @@ public class ModuleChooserController {
 
             isValid = !mail.isEmpty();
 
-            if(!isValid){
+            if (!isValid) {
                 System.out.println("Invalid mail data.");
             }
 
@@ -302,6 +294,7 @@ public class ModuleChooserController {
             if (totalCredits == 120) {
                 submitReservedMods1();
                 submitReservedMods2();
+                goNextTab();
             } else {
                 System.out.println("Not enough modules worth of credits selected.\n" +
                         "Please select 120 credits worth of modules.");
@@ -310,7 +303,6 @@ public class ModuleChooserController {
 
         private void submitReservedMods1() {
             for (Module mod : view.getSelectModulesPane().getUnselectedMods1().getItems()) {
-                model.getAllSelectedModules().add(mod);
                 view.getReserveModsPane().getUnselectedModsList1().getItems().add(mod);
             }
             System.out.println(model.getAllSelectedModules());
@@ -318,7 +310,6 @@ public class ModuleChooserController {
 
         private void submitReservedMods2() {
             for (Module mod : view.getSelectModulesPane().getUnselectedMods2().getItems()) {
-                model.getAllSelectedModules().add(mod);
                 view.getReserveModsPane().getUnselectedModsList2().getItems().add(mod);
             }
             System.out.println(model.getAllReservedModules());
@@ -401,7 +392,9 @@ public class ModuleChooserController {
                 for (Module mod : view.getReserveModsPane().getReservedModsList1().getItems()) {
                     model.getAllReservedModules().add(mod);
                 }
-                System.out.println(model.getAllReservedModules());
+                System.out.println("Reserve Modules added: " + model.getAllReservedModules());
+            } else {
+                System.out.println("Not enough reserve modules worth of credits.");
             }
         }
     }
@@ -412,11 +405,45 @@ public class ModuleChooserController {
                 for (Module mod : view.getReserveModsPane().getReservedModsList2().getItems()) {
                     model.getAllReservedModules().add(mod);
                 }
-                System.out.println(model.getAllReservedModules());
+            } else {
+                System.out.println("Not enough reserve modules worth of credits.");
+            }
+
+            if(view.getReserveModsPane().getResCredits1() + view.getReserveModsPane().getResCredits2() == 60){
+                addStudentDataToOverview();
+                addSelectedModsToOverview();
+                addResModsToOverview();
+                goNextTab();
+                System.out.println("Reserve modules added: " + model.getAllReservedModules());
             }
         }
     }
 
+    private void addStudentDataToOverview(){
+        String pnum = model.getStudentPnumber();
+        Name name = model.getStudentName();
+        String mail = model.getStudentEmail();
+        LocalDate date = model.getSubmissionDate();
+
+        view.getOP().getStudentDataList().getItems().add("P number - " + pnum+"\n");
+        view.getOP().getStudentDataList().getItems().add("First name - "+name.getFirstName()+"\n");
+        view.getOP().getStudentDataList().getItems().add("Family name - "+name.getFamilyName()+"\n");
+        view.getOP().getStudentDataList().getItems().add("Email address - " +mail+"\n");
+        view.getOP().getStudentDataList().getItems().add("Submission date - " + date + "\n");
+
+    }
+
+    private void addResModsToOverview() {
+        for (Module mod : model.getAllReservedModules()) {
+            view.getOP().getReserveModsList().getItems().add(mod);
+        }
+    }
+
+    private void addSelectedModsToOverview() {
+        for (Module mod : model.getAllSelectedModules()) {
+            view.getOP().getSelectModsList().getItems().add(mod);
+        }
+    }
 
     private class CreateAboutAlertHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {

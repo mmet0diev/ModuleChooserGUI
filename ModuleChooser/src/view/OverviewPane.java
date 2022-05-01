@@ -9,29 +9,44 @@ import javafx.scene.layout.VBox;
 import model.Module;
 
 public class OverviewPane extends VBox {
+    private ListView<String> studentDataList;
+    private ListView<Module> selectModsList, reserveModsList;
+    private Button saveBtn;
+
     public OverviewPane() {
         this.setPadding(new Insets(8));
         this.setSpacing(8);
         this.setAlignment(Pos.TOP_CENTER);
 
-        ListView<Module> profileList = new ListView<>();
-        profileList.setPrefSize(400, 75);
+        studentDataList = new ListView<>();
+        studentDataList.setPrefSize(400, 75);
 
         //Inner HBox holding 2 listViews
         HBox listViewBox = new HBox();
         listViewBox.setAlignment(Pos.CENTER);
         listViewBox.setSpacing(8);
-        ListView<Module> selectModsList = new ListView<>();
+        selectModsList = new ListView<>();
         selectModsList.setPrefSize(400, 350);
-        ListView<Module> reserveModsList = new ListView<>();
+        reserveModsList = new ListView<>();
         reserveModsList.setPrefSize(400, 350);
 
         listViewBox.getChildren().addAll(selectModsList, reserveModsList);
 
-        Button svBtn = new Button("Save Overview");
+        saveBtn = new Button("Save Overview");
 
-        this.getChildren().add(profileList);
+        this.getChildren().add(studentDataList);
         this.getChildren().add(listViewBox);
-        this.getChildren().add(svBtn);
+        this.getChildren().add(saveBtn);
     }
+
+    public ListView<Module> getSelectModsList(){
+        return selectModsList;
+    }
+
+    public ListView<Module> getReserveModsList(){
+        return reserveModsList;
+    }
+
+    public ListView<String> getStudentDataList(){return studentDataList;}
+
 }

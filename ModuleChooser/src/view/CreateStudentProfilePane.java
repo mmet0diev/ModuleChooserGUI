@@ -111,5 +111,4 @@ public class CreateStudentProfilePane extends GridPane {
 	public void addCreateStudentProfileHandler(EventHandler<ActionEvent> handler) {
 		btnCreateProfile.setOnAction(handler);
 	}
-
 }
