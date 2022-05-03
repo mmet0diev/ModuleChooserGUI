@@ -3,16 +3,16 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DatePicker;
 import model.*;
 import model.Module;
 import view.ModuleChooserRootPane;
 import view.CreateStudentProfilePane;
 import view.ModuleChooserMenuBar;
 
-import java.io.File;
 import java.io.FileWriter;
-import java.text.DateFormat;
 import java.time.LocalDate;
+import java.util.Locale;
 
 
 public class ModuleChooserController {
@@ -24,6 +24,7 @@ public class ModuleChooserController {
     private CreateStudentProfilePane cspp;
     private ModuleChooserMenuBar mcmb;
 
+    private Course course;
     private Module focusedMod;
     private int totalCredits;
     private int currentTab;
@@ -113,16 +114,22 @@ public class ModuleChooserController {
     //event handler used for creating a profile
     private class CreateStudentProfileHandler implements EventHandler<ActionEvent> {
         public void handle(ActionEvent e) {
-            model.setStudentCourse(view.getCreateStudentProfilePane().getSelectedCourse());
-            model.setStudentPnumber(view.getCreateStudentProfilePane().getStudentPnumber());
-            model.setStudentName(view.getCreateStudentProfilePane().getStudentName());
-            model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
-            model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
+            if (checkStudentPNum() && checkStudentName() && checkEmail() && checkDate()) {
+                model.setStudentCourse(view.getCreateStudentProfilePane().getSelectedCourse());
+                model.setStudentPnumber(view.getCreateStudentProfilePane().getStudentPnumber());
+                model.setStudentName(view.getCreateStudentProfilePane().getStudentName());
+                model.setStudentEmail(view.getCreateStudentProfilePane().getStudentEmail());
+                model.setSubmissionDate(view.getCreateStudentProfilePane().getStudentDate());
 
-            createStudentProfileLock();
-            addCompulsoryToSelectedMods();
-            System.out.println("Created.");
-            goNextTab();
+                course = model.getStudentCourse();
+
+                createStudentProfileLock();
+                addCompulsoryToSelectedMods();
+                System.out.println("Created.");
+                goNextTab();
+            }else{
+                System.out.println("\nSome or all data entered were invalid\n");
+            }
         }
 
         private void createStudentProfileLock() {
@@ -149,13 +156,13 @@ public class ModuleChooserController {
         }
 
         private boolean checkStudentPNum() {
-            boolean isValid;
+            boolean isValid = false;
             String pnum = view.getCreateStudentProfilePane().getStudentPnumber();
 
-            isValid = !pnum.isEmpty() && pnum.matches("[0-9]");
-
-            if (!isValid) {
-                System.out.println("Invalid p number details.");
+            if(!pnum.isEmpty() && pnum.matches("[0-9]*")){
+                isValid = true;
+            }else{
+                System.out.println("Invalid p number details ");
             }
 
             return isValid;
@@ -174,7 +181,6 @@ public class ModuleChooserController {
 
             return isValid;
         }
-
         //"^[_A-Za-z0-9-+]+(\.[_A-Za-z0-9-]+)@"+ "[A-Za-z0-9-]+(\.[A-Za-z0-9]+)(\.[A-Za-z]{2,})$"
         private boolean checkEmail() {
             boolean isValid;
@@ -185,21 +191,21 @@ public class ModuleChooserController {
             if (!isValid) {
                 System.out.println("Invalid mail data.");
             }
-
             return isValid;
         }
 
-//        private boolean checkDate() {
-//            boolean isValid = false;
-//            String strDate = view.getCreateStudentProfilePane().getStudentDate().toString();
-//            if (!strDate.equals("")) {
-//                isValid = true;
-//            } else {
-//                System.out.println("Date field empty.");
-//            }
-//
-//            return isValid;
-//        }
+        private boolean checkDate() {
+            boolean isValid = false;
+            String strDate;
+            try {
+                strDate = view.getCreateStudentProfilePane().getStudentDate().toString();
+                isValid = !strDate.isEmpty();
+            }catch(Exception e){
+                System.out.println("Date can't be blank.");
+            }
+
+            return isValid;
+        }
     }
 
     //Select Modules Tab Handlers
@@ -286,17 +292,34 @@ public class ModuleChooserController {
             totalCredits = 0;
             model.clearReservedModules();
             model.clearSelectedModules();
-            clearListViews();
+            clearCreateProfilePane();
+            clearSelectModsPane();
+            resetStudentData();
             view.getSelectModulesPane().initSelectModulesPane(model.getStudentCourse());
             goBackTab();
         }
 
-        private void clearListViews() {
+        private void clearSelectModsPane() {
             view.getSelectModulesPane().getUnselectedMods1().getItems().clear();
             view.getSelectModulesPane().getSelectedMods1().getItems().clear();
             view.getSelectModulesPane().getUnselectedMods2().getItems().clear();
             view.getSelectModulesPane().getSelectedMods2().getItems().clear();
             view.getSelectModulesPane().getSelectedYLongMods().getItems().clear();
+
+        }
+
+        private void clearCreateProfilePane(){
+            view.getCreateStudentProfilePane().getTxtPnumber().clear();
+            view.getCreateStudentProfilePane().getTxtFirstName().clear();
+            view.getCreateStudentProfilePane().getTxtSurname().clear();
+            view.getCreateStudentProfilePane().getTxtEmail().clear();
+        }
+
+        private void resetStudentData(){
+            model.setStudentPnumber("");
+            model.setStudentCourse(course);
+            model.setStudentName(new Name());
+            model.setStudentEmail("");
         }
     }
 

@@ -1,6 +1,7 @@
 package view;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -31,6 +32,7 @@ public class ReserveModsRootPane extends Accordion {
         private SubPaneReserveMods1(){
             this.setPadding(new Insets(10));
             this.setSpacing(8);
+            this.setAlignment(Pos.CENTER);
 
             //Instantiate 2 VBoxes, left VBox and right VBox
             VBox unselectModsBox = new VBox();

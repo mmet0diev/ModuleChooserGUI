@@ -107,6 +107,22 @@ public class CreateStudentProfilePane extends GridPane {
 		return inputDate.getValue();
 	}
 
+	public TextField getTxtPnumber() {
+		return txtPnumber;
+	}
+
+	public TextField getTxtEmail() {
+		return txtEmail;
+	}
+
+	public TextField getTxtFirstName(){
+		return txtFirstName;
+	}
+
+	public TextField getTxtSurname(){
+		return txtSurname;
+	}
+
 	//method to attach the create student profile button event handler
 	public void addCreateStudentProfileHandler(EventHandler<ActionEvent> handler) {
 		btnCreateProfile.setOnAction(handler);
